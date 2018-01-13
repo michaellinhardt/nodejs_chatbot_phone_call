@@ -32,6 +32,7 @@ module.exports = class SequelizeController extends ExtendController {
 	/*
 	** Method operators_aliases
 	** This is a security requierement by sequelize to prevent json object injection
+	** Actually we dont really use it and we should do it later this is important
 	*/
 	operators_aliases () {
 		const function_name = 'operators_aliases()'
