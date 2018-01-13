@@ -33,3 +33,15 @@ After cloning you need to :
 - Enter your root password then to connect use this command:
 - `mysql --login-path=local`
 - With this method you dont have to type password in shell command line
+- `create database dolores;`
+
+# Mysql command
+- `show databases;`
+- Display database
+- `use dolores`
+- Select the database 'dolores'
+
+# About Mysql Warning
+- sequelize deprecated String based operators are now deprecated. Please use Symbol based operators for better security, read more at http://docs.sequelizejs.com/manual/tutorial/querying.html#operators node_modules/sequelize/lib/sequelize.js:237:13
+- We actualy dont use operatorAlias and we should but this will come later
+- We dont hide the warning because we dont want forget it
