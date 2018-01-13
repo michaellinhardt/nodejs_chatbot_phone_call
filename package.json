@@ -1,0 +1,19 @@
+{
+  "name": "dolores_demo",
+  "version": "1.0.0",
+  "description": "Be-Ys Demo Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/matriceia.acc/dolores_demo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/matriceia.acc/dolores_demo/issues"
+  },
+  "homepage": "https://gitlab.com/matriceia.acc/dolores_demo#README"
+}
