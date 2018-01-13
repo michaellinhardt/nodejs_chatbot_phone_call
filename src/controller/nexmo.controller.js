@@ -19,7 +19,7 @@ module.exports = class SequelizeController extends ExtendController {
 		const function_name = 'post_events()'
 		try {
 			response.sendStatus(200)
-			global.info(__filename, function_name, 'nexmo send data to /nexmo/events')
+			// global.info(__filename, function_name, 'nexmo send data to /nexmo/events')
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -36,7 +36,7 @@ module.exports = class SequelizeController extends ExtendController {
 		try {
 			response.writeHead(200, { 'Content-Type': 'application/json' });
 			response.end(JSON.stringify(_nexmo), 'utf-8');
-			global.info(__filename, function_name, 'nexmo send data to /nexmo/ncco')
+			global.info(__filename, function_name, 'sending ncco config to nexmo')
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
