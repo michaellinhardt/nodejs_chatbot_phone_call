@@ -4,8 +4,8 @@
   "description": "Be-Ys Demo Bot",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=development nodemon ./node_modules/babel-cli/bin/babel-node.js src/app.js",
-    "prod": "babel src --out-dir dist && NODE_ENV=production node dist/app.js",
+    "start": "NODE_ENV=development nodemon ./node_modules/babel-cli/bin/babel-node.js src/index.js",
+    "prod": "babel src --out-dir dist && NODE_ENV=production node dist/index.js",
     "reinstall": "rm -rf ./node_modules && npm install",
     "lint": "echo 1"
   },
@@ -17,22 +17,12 @@
   },
   "dependencies": {
     "@google-cloud/speech": "^1.0.0",
-    "body-parser": "^1.15.2",
-    "events": "^1.1.1",
     "express": "^4.14.0",
-    "google-tts-api": "0.0.2",
     "http": "0.0.0",
-    "httpdispatcher": "^2.1.1",
-    "lame": "^1.2.4",
     "lodash": "^4.17.4",
-    "mysql": "^2.15.0",
-    "mysql2": "^1.5.1",
     "nexmo": "^2.1.1",
-    "node-mpv": "^1.4.1",
     "node-record-lpcm16": "^0.3.0",
-    "player": "^0.6.1",
     "sequelize": "^4.28.8",
-    "speaker": "^0.4.0",
     "superagent": "^3.8.2",
     "superagent-auth-bearer": "0.0.1",
     "websocket": "^1.0.25"
