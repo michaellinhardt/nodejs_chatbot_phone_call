@@ -1,21 +1,15 @@
 {
-  "name": "matriceia-acc-poc-janvier",
-  "version": "1.0.0",
-  "description": "A bot built with Recast.AI",
-  "main": "app.js",
+  "name": "dolores_demo",
+  "version": "0.0.0",
+  "description": "Be-Ys Demo Bot",
+  "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development nodemon ./node_modules/babel-cli/bin/babel-node.js src/app.js",
-    "test": "NODE_ENV=development nodemon ./node_modules/babel-cli/bin/babel-node.js test.js",
-    "voice": "NODE_ENV=development nodemon ./node_modules/babel-cli/bin/babel-node.js src/microphone.js",
-    "phone": "NODE_ENV=development nodemon ./node_modules/babel-cli/bin/babel-node.js src/echo_server.js",
-    "prod": "npm run build && NODE_ENV=production node dist/app.js",
-	"vocalToIntent": "NODE_ENV=development nodemon ./node_modules/babel-cli/bin/babel-node.js scripts/vocalToIntent.js",
-    "build": "babel src --out-dir dist",
-    "msg": "echo 'alias msg=\"sh ${PWD}/tools/msg.sh $@\"'",
+    "prod": "babel src --out-dir dist && NODE_ENV=production node dist/app.js",
     "reinstall": "rm -rf ./node_modules && npm install",
     "lint": "echo 1"
   },
-  "author": "MasterIA.ACC",
+  "author": "Patrick Luc Adelin Michael",
   "license": "ISC",
   "repository": {
     "type": "git",
