@@ -29,19 +29,19 @@ module.exports = class SequelizeController extends ExtendController {
 		}
 	}
 
-		/*
-		** Method operators_aliases
-		** This is a security requierement by sequelize to prevent json object injection
-		*/
-		operators_aliases () {
-			const function_name = 'operators_aliases()'
-			try {
-				this.op = Sequelize.Op
-				return {}
+	/*
+	** Method operators_aliases
+	** This is a security requierement by sequelize to prevent json object injection
+	*/
+	operators_aliases () {
+		const function_name = 'operators_aliases()'
+		try {
+			this.op = Sequelize.Op
+			return {}
 
-			} catch (error) {
-				global.err(__filename, function_name, error)
-			}
+		} catch (error) {
+			global.err(__filename, function_name, error)
 		}
+	}
 
 }
