@@ -18,7 +18,7 @@ module.exports = class SequelizeController extends ExtendController {
 	** This is async because we wait to be connected before continue
 	*/
 	async start () {
-		const function_name = 'method()'
+		const function_name = 'start()'
 		try {
 			this.db = new Sequelize(_sequelize.database, _sequelize.username, _sequelize.password, _sequelize)
 			await this.db.authenticate()

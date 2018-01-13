@@ -4,6 +4,7 @@ import {
 	ExtendController,
 	LogController,
 	SequelizeController,
+	ExpressController,
 } from './controller'
 
 /*
@@ -26,6 +27,7 @@ class Dolores extends ExtendController {
 		try {
 			this.init_controllers()
 			this.sequelize.start()
+			this.express.start()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
@@ -45,6 +47,7 @@ class Dolores extends ExtendController {
 		try {
 			this.log = new LogController()
 			this.sequelize = new SequelizeController()
+			this.express = new ExpressController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
