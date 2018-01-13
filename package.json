@@ -13,7 +13,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git@github.com:RecastAI/starter-NodeJS.git"
+    "url": "git+https://gitlab.com/matriceia.acc/dolores_demo.git"
   },
   "dependencies": {
     "@google-cloud/speech": "^1.0.0",
