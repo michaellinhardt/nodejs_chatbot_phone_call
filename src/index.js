@@ -6,6 +6,7 @@ import {
 	SequelizeController,
 	ExpressController,
 	NexmoController,
+	SocketController,
 } from './controller'
 
 /*
@@ -28,13 +29,14 @@ class Dolores extends ExtendController {
 		try {
 			this.init_controllers()
 			await this.sequelize.start()
+			this.socket.start()
 			this.express.start({ nexmo: this.nexmo })
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
-	
+
 	/*
 	** Method init_controller()
 	** This method instantiate all controller needed for Dolores
@@ -47,6 +49,7 @@ class Dolores extends ExtendController {
 			this.sequelize = new SequelizeController()
 			this.express = new ExpressController()
 			this.nexmo = new NexmoController()
+			this.socket = new SocketController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
