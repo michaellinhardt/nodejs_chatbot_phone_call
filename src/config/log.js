@@ -9,15 +9,15 @@
 */
 
 module.exports = {
-    terminal: true,
-    folder: './log',
-    color:
-    {
-        filename: '\x1b[36m',
-        message: '\x1b[0m',
-        info: '\x1b[33m',
-        warn: '\x1b[35m',
-        error: '\x1b[31m',
-        clear: '\x1b[0m',
-    },
+	terminal: true,
+	folder: './log',
+	color:
+	{
+		filename: '\x1b[36m',
+		message: '\x1b[0m',
+		info: '\x1b[33m',
+		warn: '\x1b[35m',
+		error: '\x1b[31m',
+		clear: '\x1b[0m',
+	},
 }
