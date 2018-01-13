@@ -25,6 +25,7 @@ class Dolores extends ExtendController {
 		const function_name = 'start()'
 		try {
 			this.init_controllers()
+			this.sequelize.start()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
