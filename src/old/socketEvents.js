@@ -1,0 +1,4 @@
+module.exports = {
+  MESSAGE_FROM_ECHO_SERVER: 'MESSAGE_FROM_ECHO_SERVER',
+  NEW_CALL: 'NEW_CALL'
+}
