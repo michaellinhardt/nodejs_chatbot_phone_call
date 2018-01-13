@@ -55,30 +55,12 @@ module.exports = class ExpressController extends ExtendController {
 	init_roads (handler) {
 		const function_name = 'init_roads()'
 		try {
-			this.server.use('/nexmo/events', (req, res) => this.incoming(req, res, handler.nexmo.post_events))
-			this.server.use('/nexmo/ncco', (req, res) => this.incoming(req, res, handler.nexmo.post_ncco))
+			this.server.use('/nexmo/events', handler.nexmo.post_events)
+			this.server.use('/nexmo/ncco', handler.nexmo.post_ncco)
 
 			global.info(__filename, function_name, 'roads bridge are setting up')
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
-		}
-	}
-
-	/*
-	** Method incoming()
-	** This methode is a wrapper for incoming message
-	** It goal is to call the dedicated method for this entry point
-	** and then send response to the post (code 200 or 400)
-	*/
-	async incoming (req, res, handler) {
-		const function_name = 'incoming()'
-		try {
-			await handler(req, res)
-			res.sendStatus(200)
-
-		} catch (error) {
-			res.sendStatus(400)
 			global.err(__filename, function_name, error)
 		}
 	}
