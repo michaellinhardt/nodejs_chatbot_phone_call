@@ -8,6 +8,7 @@ module.exports = class ExtendController {
 	constructor (param) {
 		try {
 			this.set_config(param)
+			this.info = global.info || null
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: constructor()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)

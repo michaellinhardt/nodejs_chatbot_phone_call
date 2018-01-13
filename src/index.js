@@ -3,7 +3,7 @@ import { _log } from './config'
 import {
 	ExtendController,
 	LogController,
-	// SequelizeController,
+	SequelizeController,
 } from './controller'
 
 class Dolores extends ExtendController {
@@ -23,7 +23,7 @@ class Dolores extends ExtendController {
 		const function_name = 'init_controller()'
 		try {
 			this.log = new LogController()
-			// this.sequelize = new SequelizeController()
+			this.sequelize = new SequelizeController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)

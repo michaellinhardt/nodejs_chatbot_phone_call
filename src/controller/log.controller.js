@@ -25,6 +25,9 @@ module.exports = class LogController extends ExtendController {
 		} else {
 			this.globals_enable()
 		}
+		global.err = (filename, functionn, error) => {
+			this.logger.error(`${_log.color.filename}${this.path_to_index(filename)}.${functionn}, ${_log.color.error}${error}${_log.color.clear}`)
+		}
 	}
 
 	globals_enable () {
@@ -35,9 +38,6 @@ module.exports = class LogController extends ExtendController {
 			global.info = (filename, functionn, logMessage) => {
 				this.logger.info(`${_log.color.filename}${this.path_to_index(filename)}.${functionn}, ${_log.color.info}${logMessage}${_log.color.clear}`)
 			}
-			global.err = (filename, functionn, error) => {
-				this.logger.error(`${_log.color.filename}${this.path_to_index(filename)}.${functionn}, ${_log.color.error}${error}${_log.color.clear}`)
-			}
 			global.warn = (filename, functionn, logMessage) => {
 				this.logger.warn(`${_log.color.filename}${this.path_to_index(filename)}.${functionn}, ${_log.color.warn}${logMessage}${_log.color.clear}`)
 			}
@@ -45,6 +45,7 @@ module.exports = class LogController extends ExtendController {
 				process.stdout.write(`${prettyjson.render(logObject)}\r\n${_log.color.clear}`)
 			}
 			global.info(__filename, 'globals_enable()', 'load log methods in globals')
+			
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: globals_enable()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
 		}
