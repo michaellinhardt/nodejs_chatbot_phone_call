@@ -25,7 +25,7 @@ module.exports = class SequelizeController extends ExtendController {
 			global.info(__filename, function_name, 'connection to mysql established')
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
@@ -41,7 +41,7 @@ module.exports = class SequelizeController extends ExtendController {
 			return {}
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
