@@ -34,13 +34,10 @@ class Dolores extends ExtendController {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
-
+	
 	/*
 	** Method init_controller()
-	** load all controller constructor
-	**
-	** this.log is controlling the log ouput (file and terminal)
-	** this.sequelize is controlling the database interaction
+	** This method instantiate all controller needed for Dolores
 	*/
 
 	init_controllers () {
