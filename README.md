@@ -20,6 +20,16 @@ After cloning you need to :
 
 
 
-# Refactore
+# Install Dolores
 - `npm reinstall`
 - `mkdir log`
+
+# Mysql install and setup
+- `brew install mysql`
+- `mysql.server start`
+- `mysql_secure_installation`
+- Follow mysql instructions to make a secure install
+- `mysql_config_editor set --login-path=local --host=localhost --user=username --password`
+- Enter your root password then to connect use this command:
+- `mysql --login-path=local`
+- With this method you dont have to type password in shell command line
