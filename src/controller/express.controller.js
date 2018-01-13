@@ -1,5 +1,5 @@
 import express from 'express'
-import bodyParser from 'body-parser'
+import http from  'http'
 
 import { _log, _express } from '../config'
 
@@ -15,15 +15,14 @@ module.exports = class ExpressController extends ExtendController {
 	constructor (parent) { super({ name: __filename }) }
 
 	/*
-	** Method start ()
+	** Method init ()
 	** This method run http server and road to listen
 	*/
-	async start (handler) {
-		const function_name = 'start()'
+	async init (handler) {
+		const function_name = 'init()'
 		try {
 			this.init_config()
 			this.init_roads(handler)
-			this.listen()
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -37,9 +36,8 @@ module.exports = class ExpressController extends ExtendController {
 	init_config () {
 		const function_name = 'init_config()'
 		try {
-			this.server = express()
-			this.server.set('port', _express.port)
-			this.server.use(bodyParser.json())
+			this.express = express()
+			this.server = http.createServer(this.express)
 			global.info(__filename, function_name, 'express server is setting up')
 
 		} catch (error) {
@@ -55,8 +53,8 @@ module.exports = class ExpressController extends ExtendController {
 	init_roads (handler) {
 		const function_name = 'init_roads()'
 		try {
-			this.server.use('/nexmo/events', handler.nexmo.post_events)
-			this.server.use('/nexmo/ncco', handler.nexmo.post_ncco)
+			this.express.post('/nexmo/events', handler.nexmo.post_events)
+			this.express.get('/nexmo/ncco', handler.nexmo.post_ncco)
 
 			global.info(__filename, function_name, 'roads bridge are setting up')
 
@@ -73,7 +71,7 @@ module.exports = class ExpressController extends ExtendController {
 	async listen () {
 		const function_name = 'listen()'
 		try {
-			await this.server.listen(this.server.get('port'))
+			await this.server.listen(_express.port)
 			global.info(__filename, function_name, 'express is now listening roads')
 
 		} catch (error) {
