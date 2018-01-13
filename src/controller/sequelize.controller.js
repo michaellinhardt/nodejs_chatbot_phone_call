@@ -20,7 +20,8 @@ module.exports = class SequelizeController extends ExtendController {
 	async start () {
 		const function_name = 'start()'
 		try {
-			this.db = new Sequelize(_sequelize.database, _sequelize.username, _sequelize.password, _sequelize)
+			this.operators_aliases()
+			this.db = new Sequelize(_sequelize.database, _sequelize.username, _sequelize.password, { ..._sequelize, operatorsAliases: this.operatorsAliases })
 			await this.db.authenticate()
 			global.info(__filename, function_name, 'connection to database established')
 
@@ -28,4 +29,19 @@ module.exports = class SequelizeController extends ExtendController {
 			global.err(__filename, function_name, error)
 		}
 	}
+
+		/*
+		** Method operators_aliases
+		** This is a security requierement by sequelize to prevent json object injection
+		*/
+		operators_aliases () {
+			const function_name = 'method()'
+			try {
+				this.op = Sequelize.Op
+				this.operatorsAliases = {}
+			} catch (error) {
+				global.err(__filename, function_name, error)
+			}
+		}
+
 }

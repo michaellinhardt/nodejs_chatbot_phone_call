@@ -40,8 +40,8 @@ After cloning you need to :
 - Display database
 - `use dolores`
 - Select the database 'dolores'
+- `exit`
+- Disconnect
 
-# About Mysql Warning
-- sequelize deprecated String based operators are now deprecated. Please use Symbol based operators for better security, read more at http://docs.sequelizejs.com/manual/tutorial/querying.html#operators node_modules/sequelize/lib/sequelize.js:237:13
-- We actualy dont use operatorAlias and we should but this will come later
-- We dont hide the warning because we dont want forget it
+# About Mysql Security
+- As Sequelize recommends we are using an operatorsAliases object to protect our code from json injection. But actually this object is empty and we should implement it later for security purpose

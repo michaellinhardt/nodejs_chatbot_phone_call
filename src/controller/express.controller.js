@@ -1,6 +1,7 @@
 import express from 'express'
+import bodyParser from 'body-parser'
 
-import { _log } from '../config'
+import { _log, _express } from '../config'
 
 import ExtendController from './extend.controller'
 
@@ -18,7 +19,9 @@ module.exports = class ExpressController extends ExtendController {
 	async start () {
 		const function_name = 'start()'
 		try {
-			global.info(__filename, function_name, 'http server is ready')
+			this.server = express()
+			this.server.set('port', _express.port)
+			global.info(__filename, function_name, 'express server is ready')
 
 		} catch (error) {
 			global.err(__filename, function_name, error)
