@@ -19,8 +19,7 @@ class Dolores extends ExtendController {
 
 	/*
 	** Method start()
-	** - init_controller():
-	**   -  load all controller constructor method in the right place
+	** Initialise every part of the server
 	*/
 	start () {
 		const function_name = 'start()'
