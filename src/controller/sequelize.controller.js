@@ -22,7 +22,7 @@ module.exports = class SequelizeController extends ExtendController {
 		try {
 			this.db = new Sequelize(_sequelize.database, _sequelize.username, _sequelize.password, { ..._sequelize, operatorsAliases: this.operators_aliases })
 			await this.db.authenticate()
-			global.info(__filename, function_name, 'connection to database established')
+			global.info(__filename, function_name, 'connection to mysql established')
 
 		} catch (error) {
 			global.err(__filename, function_name, error)

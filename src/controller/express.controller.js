@@ -21,10 +21,25 @@ module.exports = class ExpressController extends ExtendController {
 		try {
 			this.server = express()
 			this.server.set('port', _express.port)
-			global.info(__filename, function_name, 'express server is ready')
+			this.server.use(bodyParser.json())
+			global.info(__filename, function_name, 'express server is setting up')
+			this.init_roads()
 
 		} catch (error) {
 			global.err(__filename, function_name, error)
 		}
 	}
+
+		/*
+		** Method init_roads()
+		** This methods open one by one each roads that we need to listen
+		*/
+		init_roads () {
+			const function_name = 'init_roads()'
+			try {
+
+			} catch (error) {
+				global.err(__filename, function_name, error)
+			}
+		}
 }
