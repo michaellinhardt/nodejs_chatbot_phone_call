@@ -1,7 +1,13 @@
-import { _log } from '../config'
+import { _log, _sequelize } from '../config'
 
 import ExtendController from './extend.controller'
 
+/*
+** Class SequelizeController
+** This controller is here ton connect database and give handler
+**
+** object Name: description
+*/
 module.exports = class SequelizeController extends ExtendController {
 	constructor () {
 		super({ name: __filename })
