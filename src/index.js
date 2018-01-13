@@ -22,11 +22,11 @@ class Dolores extends ExtendController {
 	** Method start()
 	** Initialise every part of the server
 	*/
-	start () {
+	async start () {
 		const function_name = 'start()'
 		try {
 			this.init_controllers()
-			this.sequelize.start()
+			await this.sequelize.start()
 			this.express.start()
 
 		} catch (error) {
