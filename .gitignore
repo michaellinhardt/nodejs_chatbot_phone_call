@@ -3,3 +3,4 @@ node_modules/
 dist/
 config/token.js
 private/
+log/
