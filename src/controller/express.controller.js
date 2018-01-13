@@ -26,7 +26,7 @@ module.exports = class ExpressController extends ExtendController {
 			this.listen()
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
@@ -43,7 +43,7 @@ module.exports = class ExpressController extends ExtendController {
 			global.info(__filename, function_name, 'express server is setting up')
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
@@ -61,7 +61,7 @@ module.exports = class ExpressController extends ExtendController {
 			global.info(__filename, function_name, 'roads bridge are setting up')
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
@@ -77,7 +77,7 @@ module.exports = class ExpressController extends ExtendController {
 			global.info(__filename, function_name, 'express is now listening roads')
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
