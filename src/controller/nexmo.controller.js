@@ -22,7 +22,7 @@ module.exports = class SequelizeController extends ExtendController {
 			global.err(__filename, function_name, error)
 		}
 	}
-
+	
 	/*
 	** Method post_ncco
 	** This method is call when Nexmo post data on road /nexmo/ncco
