@@ -11,7 +11,7 @@ const color = {
 }
 
 const json = (obj) => {
-	return process.stdout.write(`${prettyjson.render(obj)}\r\n`)
+	return process.stdout.write(`${prettyjson.render(obj)}\r\n${_log.color.clear}`)
 }
 
 const errorMsg = (file, func, msg) => {
