@@ -29,8 +29,8 @@ class Dolores extends ExtendController {
 		try {
 			this.init_controllers()
 			await this.sequelize.start()
-			this.socket.start()
 			this.express.start({ nexmo: this.nexmo })
+			this.socket.start({ express: this.express })
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
