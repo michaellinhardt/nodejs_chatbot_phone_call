@@ -16,3 +16,10 @@ After cloning you need to :
 - `ngork http 8000` -> Get the Forwarding address
 - `nexmo app:update 0b35c0ac-e08b-4481-8df5-6c4764a522c2 'Callcenter' [ngrok address]/ncco [ngrok address]/events`
 - `npm run phone`
+
+
+
+
+# Refactore
+- `npm reinstall`
+- `mkdir log`
