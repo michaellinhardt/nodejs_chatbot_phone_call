@@ -25,7 +25,8 @@
     "sequelize": "^4.28.8",
     "superagent": "^3.8.2",
     "superagent-auth-bearer": "0.0.1",
-    "websocket": "^1.0.25"
+    "websocket": "^1.0.25",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
