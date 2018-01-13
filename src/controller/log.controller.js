@@ -45,7 +45,7 @@ module.exports = class LogController extends ExtendController {
 				process.stdout.write(`${prettyjson.render(logObject)}\r\n${_log.color.clear}`)
 			}
 			global.info(__filename, 'globals_enable()', 'load log methods in globals')
-			
+
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: globals_enable()\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
