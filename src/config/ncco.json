@@ -1,0 +1,24 @@
+[
+	{
+		"action": "talk",
+		"text": "Bonjour Michael je suis heureuse de te parler à nouveau. Que puis-je faire pour toi ?",
+		"voiceName": "Celine"
+	},
+	{
+		"action":"connect",
+		"eventUrl":[
+			"https://b55322f4.ngrok.io/nexmo/events"
+		],
+		"from":"33172770593",
+		"endpoint":[
+			{
+				"type":"websocket",
+				"uri":"ws://b55322f4.ngrok.io/socket",
+				"content-type":"audio/l16;rate=16000",
+				"headers":{
+					"whatever":"metadata_you_want"
+				}
+			}
+		]
+	}
+]
