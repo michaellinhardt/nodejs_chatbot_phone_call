@@ -3,26 +3,24 @@
 ** This config is sended to Nexmo to indicate the socket process
 */
 
-const ngrok = 'b55322f4.ngrok.io'
-
 module.exports = [
 	{
 		"action": "talk",
-		"text": "Bonjour Michael je suis heureuse de te parler à nouveau. Que puis-je faire pour toi ?",
+		"text": "Ici Daulaurésse.",
 		"voiceName": "Celine",
 	},
 	{
 		"action": "connect",
 		"eventUrl":
 		[
-			`https://${ngrok}/nexmo/events`,
+			"https://b55322f4.ngrok.io/nexmo/events",
 		],
 		"from": "33172770593",
 		"endpoint":
 		[
 			{
 				"type": "websocket",
-				"uri": `ws://${ngrok}/socket`,
+				"uri": "ws://b55322f4.ngrok.io/socket",
 				"content-type": "audio/l16;rate=16000",
 				"headers":
 				{
