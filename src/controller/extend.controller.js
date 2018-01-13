@@ -4,26 +4,26 @@ import {
 	_log,
 } from '../config/'
 
+/*
+** Class Extend
+** This code is inside every other Controller Class
+** It bring methot that they all need like seting the class name for log
+** enabling or not the log output
+*/
 module.exports = class ExtendController {
 	constructor (param) {
 		try {
-			this.set_config(param)
 			this.info = global.info || null
 
 		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: constructor()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: constructor()\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
 
-	set_config (param) {
-		try {
-			this.name = this.path_to_index(param.name) || 'unknow'
-
-		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: set_config()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
-		}
-	}
-
+	/*
+	** Method path_to_index
+	** Set the currently instencied class name as an usable index
+	*/
 	path_to_index (filename) {
 		const name = path.basename(filename).replace('.js', '').split('.')
 		const lastName = name[name.length - 1]

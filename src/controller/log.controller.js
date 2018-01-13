@@ -14,7 +14,7 @@ module.exports = class LogController extends ExtendController {
 			this.init_log_functions()
 
 		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: contructor()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: contructor()\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
 
@@ -47,7 +47,7 @@ module.exports = class LogController extends ExtendController {
 			global.info(__filename, 'globals_enable()', 'load log methods in globals')
 			
 		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: globals_enable()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: globals_enable()\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
 
@@ -61,7 +61,7 @@ module.exports = class LogController extends ExtendController {
 			global.json = () => false
 
 		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: globals_disable()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: globals_disable()\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
 
@@ -101,7 +101,7 @@ module.exports = class LogController extends ExtendController {
 			})
 
 		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: init_winston()\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: init_winston()\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
 }

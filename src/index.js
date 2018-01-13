@@ -5,6 +5,7 @@ import {
 	LogController,
 	SequelizeController,
 	ExpressController,
+	NexmoController,
 } from './controller'
 
 /*
@@ -27,10 +28,10 @@ class Dolores extends ExtendController {
 		try {
 			this.init_controllers()
 			await this.sequelize.start()
-			this.express.start()
+			this.express.start({ nexmo: this.nexmo })
 
 		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
 
@@ -48,9 +49,10 @@ class Dolores extends ExtendController {
 			this.log = new LogController()
 			this.sequelize = new SequelizeController()
 			this.express = new ExpressController()
+			this.nexmo = new NexmoController()
 
 		} catch (error) {
-			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error}\r\n${_log.color.clear}`)
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
 	}
 }
