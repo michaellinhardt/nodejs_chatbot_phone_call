@@ -32,7 +32,7 @@ module.exports = class GoogleController extends ExtendController {
 	}
 
 	/*
-	** Method write ()
+	** Method clear_stream ()
 	*/
 	clear_stream () {
 		const function_name = 'clear_stream()'
@@ -49,26 +49,39 @@ module.exports = class GoogleController extends ExtendController {
 	}
 
 	/*
+	** Method get_data ()
+	*/
+	get_data (data) {
+		const function_name = 'get_data()'
+		try {
+			const msg = (data.results[0] && data.results[0].alternatives[0]
+				&& data.results[0].alternatives[0].transcript) || null
+				if (msg) {
+					console.log(msg)
+					this.stream = null
+				}
+
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+
+	/*
 	** Method new_stream ()
 	*/
 	async new_stream () {
 		const function_name = 'new_stream()'
 		try {
+			this.client = new speech.SpeechClient()
+
 			this.streamExpire = (Date.now() / 1000) + _google.expirationTime
-			global.info(__filename, function_name, 'create a stream google')
-			this.client = new speech.SpeechClient();
 			this.stream = this.client
 			.streamingRecognize(_google)
-			.on('error', console.error)
-			.on('data', async (data) => {
-				const msg = (data.results[0] && data.results[0].alternatives[0]
-					&& data.results[0].alternatives[0].transcript) || null
-					if (msg) {
-						console.log(msg)
-						this.clear_stream()
-						this.new_stream()
-					}
-				})
+			.on('error', (error) => global.err(__filename, function_name, error.stack))
+			.on('data', (data) => this.get_data(data))
+
+			// global.info(__filename, function_name, 'create a stream google')
+
 			} catch (error) {
 				global.err(__filename, function_name, error.stack)
 			}
