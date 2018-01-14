@@ -54,8 +54,8 @@ module.exports = class GoogleController extends ExtendController {
 			if (this.stream) {
 				this.stream.destroy()
 			}
-			this.client = null
 			this.stream = null
+			this.client = null
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -72,7 +72,9 @@ module.exports = class GoogleController extends ExtendController {
 				&& data.results[0].alternatives[0].transcript) || null
 				if (msg) {
 					this.recast(msg)
+					this.stream.destroy()
 					this.stream = null
+					this.client = null
 				}
 
 		} catch (error) {

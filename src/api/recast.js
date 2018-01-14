@@ -3,7 +3,7 @@ import request from 'superagent'
 
 import { _recast } from '../config'
 
-export default class Recastapi {
+export default class RecastApi {
 	constructor (user, bot, token) {
 		this.user = user
 		this.bot = bot

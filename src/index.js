@@ -31,10 +31,11 @@ class Dolores extends ExtendController {
 	async start () {
 		const function_name = 'start()'
 		try {
+			const brain = { }
 			this.init_controllers()
-			this.answer.start()
-			this.brain.start({ answer: this.answer })
-			this.recast.start({ brain: this.brain })
+			this.nexmo.start({ brain })
+			this.answer.start({ brain, nexmo: this.nexmo })
+			this.recast.start({ brain, answer: this.answer })
 			this.google.start({ recast: this.recast })
 			await this.sequelize.start()
 			this.express.init({ nexmo: this.nexmo })
@@ -61,7 +62,6 @@ class Dolores extends ExtendController {
 			this.socket = new SocketController()
 			this.google = new GoogleController()
 			this.recast = new RecastController()
-			this.brain = new BrainController()
 			this.answer = new AnswerController()
 
 		} catch (error) {

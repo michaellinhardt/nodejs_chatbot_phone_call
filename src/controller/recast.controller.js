@@ -19,6 +19,7 @@ module.exports = class RecastController extends ExtendController {
 			const token = { ..._recast.token.dolores_demo }
 			this.api = new recast(token.user, token.bot, token.token)
 
+			this.answer = handler.answer
 			this.brain = handler.brain
 
 			global.info(__filename, function_name, 'setting up recast api')
@@ -35,8 +36,13 @@ module.exports = class RecastController extends ExtendController {
 	async analyse (message) {
 		const function_name = 'analyse()'
 		try {
-			const result = await this.api.analyse(message)
-			this.brain.analyse(result)
+			this.brain.message = message
+			this.brain.result = await this.api.analyse(message)
+			this.brain.intent = this.brain.result.intents && this.brain.result.intents[0] && this.brain.result.intents[0].slug || null
+			this.brain.context = this.brain.intent && this.brain.intent.split('-')[0] || null
+			this.brain.intent = this.brain.intent && this.brain.intent.replace('small-', '')
+
+			this.answer.build()
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
