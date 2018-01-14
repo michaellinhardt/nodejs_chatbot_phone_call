@@ -7,6 +7,7 @@ import {
 	ExpressController,
 	NexmoController,
 	SocketController,
+	GoogleController,
 } from './controller'
 
 /*
@@ -30,7 +31,7 @@ class Dolores extends ExtendController {
 			this.init_controllers()
 			await this.sequelize.start()
 			this.express.init({ nexmo: this.nexmo })
-			this.socket.start({ express: this.express })
+			this.socket.start({ express: this.express, google: this.google })
 			this.express.listen()
 
 		} catch (error) {
@@ -51,6 +52,7 @@ class Dolores extends ExtendController {
 			this.express = new ExpressController()
 			this.nexmo = new NexmoController()
 			this.socket = new SocketController()
+			this.google = new GoogleController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
