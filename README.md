@@ -21,7 +21,8 @@ After cloning you need to :
 
 
 # Install Dolores
-- Set the './private' folder (outside of src)
+- Copy the ./private folder from gdrive /root/doc & tuto/token/
+- Past the ./private folder here
 - `npm reinstall`
 - `mkdir log`
 
