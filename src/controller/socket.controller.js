@@ -38,6 +38,7 @@ module.exports = class SequelizeController extends ExtendController {
 				httpServer: handler.express.server,
 				autoAcceptConnections: true,
 			})
+			this.google = handler.google
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -69,7 +70,7 @@ module.exports = class SequelizeController extends ExtendController {
 		const function_name = 'event_message()'
 		try {
 			if (message.type === 'binary') {
-				// console.log('audio')
+				this.google.write(message.binaryData)
 			}
 
 		} catch (error) {
@@ -100,8 +101,8 @@ module.exports = class SequelizeController extends ExtendController {
 		const function_name = 'event_connect()'
 		try {
 			global.warn(__filename, function_name, 'open connection by websocket')
-			connection.on('message', this.event_message)
-			connection.on('close', this.event_close)
+			connection.on('message', this.event_message.bind(this))
+			connection.on('close', this.event_close.bind(this))
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
