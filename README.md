@@ -17,9 +17,6 @@ After cloning you need to :
 - `nexmo app:update 0b35c0ac-e08b-4481-8df5-6c4764a522c2 'Callcenter' [ngrok address]/ncco [ngrok address]/events`
 - `npm run phone`
 
-
-
-
 # Install Dolores
 - Copy the ./private folder from gdrive /root/doc & tuto/token/
 - Past the ./private folder here
