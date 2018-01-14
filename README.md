@@ -21,6 +21,7 @@ After cloning you need to :
 
 
 # Install Dolores
+- Set the './private' folder (outside of src)
 - `npm reinstall`
 - `mkdir log`
 
