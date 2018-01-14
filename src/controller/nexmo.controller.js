@@ -27,12 +27,12 @@ module.exports = class SequelizeController extends ExtendController {
 	}
 
 	/*
-	** Method post_ncco
+	** Method get_ncco
 	** This method is call when Nexmo post data on road /nexmo/ncco
 	** It send to nexmo the ncco config to connect with socket
 	*/
-	post_ncco (request, response) {
-		const function_name = 'post_ncco()'
+	get_ncco (request, response) {
+		const function_name = 'get_ncco()'
 		try {
 			response.writeHead(200, { 'Content-Type': 'application/json' });
 			response.end(JSON.stringify(_nexmo), 'utf-8');

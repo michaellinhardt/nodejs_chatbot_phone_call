@@ -54,7 +54,7 @@ module.exports = class ExpressController extends ExtendController {
 		const function_name = 'init_roads()'
 		try {
 			this.express.post('/nexmo/events', handler.nexmo.post_events)
-			this.express.get('/nexmo/ncco', handler.nexmo.post_ncco)
+			this.express.get('/nexmo/ncco', handler.nexmo.get_ncco)
 
 			global.info(__filename, function_name, 'roads bridge are setting up')
 
