@@ -12,6 +12,20 @@ module.exports = class GoogleController extends ExtendController {
 	constructor () { super({ name: __filename }) }
 
 	/*
+	** Method start
+	*/
+	start (handler) {
+		const function_name = 'start()'
+		try {
+			this.recast = (message) => handler.recast.analyse(message)
+			global.info(__filename, function_name, 'setting up recast api')
+
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+
+	/*
 	** Method write ()
 	** This method is a wrapper to the write method from google SDK
 	** It reset the stream if expire time is reached or create it
@@ -57,7 +71,7 @@ module.exports = class GoogleController extends ExtendController {
 			const msg = (data.results[0] && data.results[0].alternatives[0]
 				&& data.results[0].alternatives[0].transcript) || null
 				if (msg) {
-					console.log(msg)
+					this.recast(msg)
 					this.stream = null
 				}
 

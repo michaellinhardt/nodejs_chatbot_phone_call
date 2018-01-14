@@ -5,6 +5,7 @@ import ExpressController from './express.controller'
 import NexmoController from './nexmo.controller'
 import SocketController from './socket.controller'
 import GoogleController from './google.controller'
+import RecastController from './recast.controller'
 
 module.exports = {
 	ExtendController,
@@ -14,4 +15,5 @@ module.exports = {
 	NexmoController,
 	SocketController,
 	GoogleController,
+	RecastController,
 }

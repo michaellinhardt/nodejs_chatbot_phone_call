@@ -8,7 +8,7 @@ import ExtendController from './extend.controller'
 ** Class NexmoController
 ** This controller handle incoming/outcoming message from Nexmo
 */
-module.exports = class SequelizeController extends ExtendController {
+module.exports = class NexmoController extends ExtendController {
 	constructor () { super({ name: __filename }) }
 
 	/*

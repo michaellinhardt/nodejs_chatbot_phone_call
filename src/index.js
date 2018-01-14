@@ -8,6 +8,7 @@ import {
 	NexmoController,
 	SocketController,
 	GoogleController,
+	RecastController,
 } from './controller'
 
 /*
@@ -29,6 +30,8 @@ class Dolores extends ExtendController {
 		const function_name = 'start()'
 		try {
 			this.init_controllers()
+			this.recast.start()
+			this.google.start({ recast: this.recast })
 			await this.sequelize.start()
 			this.express.init({ nexmo: this.nexmo })
 			this.socket.start({ express: this.express, google: this.google })
@@ -53,6 +56,7 @@ class Dolores extends ExtendController {
 			this.nexmo = new NexmoController()
 			this.socket = new SocketController()
 			this.google = new GoogleController()
+			this.recast = new RecastController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
