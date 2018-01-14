@@ -13,11 +13,13 @@ module.exports = class RecastController extends ExtendController {
 	/*
 	** Method start
 	*/
-	start () {
+	start (handler) {
 		const function_name = 'start()'
 		try {
 			const token = { ..._recast.token.dolores_demo }
 			this.api = new recast(token.user, token.bot, token.token)
+
+			this.brain = handler.brain
 
 			global.info(__filename, function_name, 'setting up recast api')
 
@@ -34,7 +36,7 @@ module.exports = class RecastController extends ExtendController {
 		const function_name = 'analyse()'
 		try {
 			const result = await this.api.analyse(message)
-			console.log(result)
+			this.brain.analyse(result)
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

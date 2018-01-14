@@ -6,6 +6,8 @@ import NexmoController from './nexmo.controller'
 import SocketController from './socket.controller'
 import GoogleController from './google.controller'
 import RecastController from './recast.controller'
+import BrainController from './brain.controller'
+import AnswerController from './answer.controller'
 
 module.exports = {
 	ExtendController,
@@ -16,4 +18,6 @@ module.exports = {
 	SocketController,
 	GoogleController,
 	RecastController,
+	BrainController,
+	AnswerController,
 }
