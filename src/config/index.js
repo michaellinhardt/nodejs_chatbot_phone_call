@@ -1,11 +1,11 @@
-import _log from './log'
-import _sequelize from './sequelize'
-import _express from './express'
-import _nexmo from './nexmo'
-import _nexmoapi from './nexmoapi'
-import _google from './google'
-import _recast from './recast'
-import _socket from './socket'
+import _log from './log.config'
+import _sequelize from './sequelize.config'
+import _express from './express.config'
+import _nexmo from './nexmo.config'
+import _nexmoapi from './nexmoapi.config'
+import _google from './google.config'
+import _recast from './recast.config'
+import _socket from './socket.config'
 
 module.exports = {
 	_log,
