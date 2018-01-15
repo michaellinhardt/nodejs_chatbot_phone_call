@@ -69,8 +69,10 @@ module.exports = class NexmoController extends ExtendController {
 		const function_name = 'answer()'
 		try {
 			this.api.talk(this.brain.client, this.brain.answer)
-			console.log('-')
-			console.log(this.brain)
+			console.log('-------------------------------------------')
+			console.log(`User: ${this.brain.message}`)
+			console.log(`Bot: ${this.brain.answer}`)
+			console.log(`Intent: ${this.brain.intent}`)
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
