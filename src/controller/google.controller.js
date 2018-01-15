@@ -17,6 +17,7 @@ module.exports = class GoogleController extends ExtendController {
 	start (handler) {
 		const function_name = 'start()'
 		try {
+			this.db = handler.db
 			this.brain = handler.brain
 			this.recast = handler.recast
 			global.info(__filename, function_name, 'setting up recast api')
@@ -71,12 +72,22 @@ module.exports = class GoogleController extends ExtendController {
 		try {
 			const message = (data.results[0] && data.results[0].alternatives[0]
 				&& data.results[0].alternatives[0].transcript) || null
+
 				if (message) {
+
 					this.brain.message = message
+					this.db.message.add(
+						this.brain.nexmo.conversation_uuid,
+						'user',
+						this.brain.intent,
+						this.brain.message,
+					)
+
 					this.recast.analyse()
-					this.stream.destroy()
-					this.stream = null
-					this.client = null
+
+					// this.stream.destroy()
+					// this.stream = null
+					// this.client = null
 				}
 
 		} catch (error) {

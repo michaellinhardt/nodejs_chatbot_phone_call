@@ -4,13 +4,13 @@ const MessageSchema = {
 	convId: {
 		type: Sequelize.STRING
 	},
+	from: {
+		type: Sequelize.TEXT,
+	},
 	intent: {
 		type: Sequelize.TEXT,
 	},
 	message: {
-		type: Sequelize.TEXT,
-	},
-	answer: {
 		type: Sequelize.TEXT,
 	},
 }
@@ -28,14 +28,14 @@ export default class MessageModel {
 		}
 	}
 
-	async add (convId, intent, message, answer) {
+	async add (convId, from, intent, message) {
 		try {
 			const function_name = 'add()'
 			await this.schema.create({
 				convId: convId,
+				from: from,
 				intent: intent,
 				message: message,
-				answer: answer,
 			})
 
 		} catch (error) {

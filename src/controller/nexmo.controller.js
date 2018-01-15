@@ -103,8 +103,8 @@ module.exports = class NexmoController extends ExtendController {
 		try {
 			this.db.message.add(
 				this.brain.db.call.convId,
+				'bot',
 				this.brain.intent,
-				this.brain.message,
 				this.brain.answer,
 			)
 			console.log('-------------------------------------------')

@@ -38,7 +38,7 @@ class Dolores extends ExtendController {
 			this.nexmo.start({ brain, db: this.sequelize })
 			this.answer.start({ brain, nexmo: this.nexmo })
 			this.recast.start({ brain, answer: this.answer })
-			this.google.start({ brain, recast: this.recast })
+			this.google.start({ brain, db: this.sequelize, recast: this.recast })
 			this.express.init({ nexmo: this.nexmo })
 			this.socket.start({
 				brain,

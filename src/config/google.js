@@ -9,6 +9,6 @@ module.exports = {
 		languageCode: 'fr-FR',
 	},
 	interimResults: false,
-	singleUtterance: true,
-	expirationTime: 40,
+	singleUtterance: false,
+	expirationTime: 30,
 }
