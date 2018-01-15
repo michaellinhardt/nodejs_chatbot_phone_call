@@ -17,7 +17,8 @@ module.exports = class GoogleController extends ExtendController {
 	start (handler) {
 		const function_name = 'start()'
 		try {
-			this.recast = (message) => handler.recast.analyse(message)
+			this.brain = handler.brain
+			this.recast = handler.recast
 			global.info(__filename, function_name, 'setting up recast api')
 
 		} catch (error) {
@@ -68,10 +69,11 @@ module.exports = class GoogleController extends ExtendController {
 	get_data (data) {
 		const function_name = 'get_data()'
 		try {
-			const msg = (data.results[0] && data.results[0].alternatives[0]
+			const message = (data.results[0] && data.results[0].alternatives[0]
 				&& data.results[0].alternatives[0].transcript) || null
-				if (msg) {
-					this.recast(msg)
+				if (message) {
+					this.brain.message = message
+					this.recast.analyse()
 					this.stream.destroy()
 					this.stream = null
 					this.client = null
