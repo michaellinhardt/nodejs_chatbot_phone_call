@@ -1,4 +1,4 @@
-import { _log, _mode } from './config'
+import { _log, _micro } from './config'
 
 import {
 	ExtendController,
@@ -40,9 +40,9 @@ class Dolores extends ExtendController {
 			this.answer.start({ brain, nexmo: this.nexmo })
 			this.recast.start({ brain, answer: this.answer })
 			this.google.start({ brain, db: this.sequelize, recast: this.recast })
-			this.express.init({ nexmo: this.nexmo })
-			if (_mode.micro) {
-				// this.nexmo.api.talk = () => false		
+			this.express.start({ nexmo: this.nexmo })
+			if (_micro.enable) {
+				this.nexmo.api.talk = () => false
 				this.micro.start({ brain, google: this.google })
 			}
 			this.socket.start({
