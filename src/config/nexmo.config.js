@@ -13,14 +13,14 @@ module.exports = [
 		"action": "connect",
 		"eventUrl":
 		[
-			"https://b55322f4.ngrok.io/nexmo/events",
+			"https://c8c0dd82.ngrok.io/nexmo/events",
 		],
-		"from": "33172770593",
+		"from": "33172770596",
 		"endpoint":
 		[
 			{
 				"type": "websocket",
-				"uri": "ws://b55322f4.ngrok.io/socket",
+				"uri": "ws://c8c0dd82.ngrok.io/socket",
 				"content-type": "audio/l16;rate=16000",
 				"headers":
 				{

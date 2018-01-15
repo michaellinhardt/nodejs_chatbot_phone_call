@@ -1,4 +1,4 @@
-import { _log } from './config'
+import { _log, _mode } from './config'
 
 import {
 	ExtendController,
@@ -11,6 +11,7 @@ import {
 	RecastController,
 	BrainController,
 	AnswerController,
+	MicroController,
 } from './controller'
 
 /*
@@ -40,6 +41,10 @@ class Dolores extends ExtendController {
 			this.recast.start({ brain, answer: this.answer })
 			this.google.start({ brain, db: this.sequelize, recast: this.recast })
 			this.express.init({ nexmo: this.nexmo })
+			if (_mode.micro) {
+				// this.nexmo.api.talk = () => false		
+				this.micro.start({ brain, google: this.google })
+			}
 			this.socket.start({
 				brain,
 				express: this.express,
@@ -73,6 +78,7 @@ class Dolores extends ExtendController {
 			this.google = new GoogleController()
 			this.recast = new RecastController()
 			this.answer = new AnswerController()
+			this.micro = new MicroController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)

@@ -94,7 +94,7 @@ module.exports = class SequelizeController extends ExtendController {
 			}
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
@@ -112,7 +112,7 @@ module.exports = class SequelizeController extends ExtendController {
 			global.warn(__filename, function_name, `nexmo close socket ${this.brain.nexmo.from}`)
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
@@ -128,7 +128,7 @@ module.exports = class SequelizeController extends ExtendController {
 			global.warn(__filename, function_name, `send newcall to webchat`)
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 
@@ -143,7 +143,7 @@ module.exports = class SequelizeController extends ExtendController {
 			global.warn(__filename, function_name, `webchat close socket`)
 
 		} catch (error) {
-			global.err(__filename, function_name, error)
+			global.err(__filename, function_name, error.stack)
 		}
 	}
 

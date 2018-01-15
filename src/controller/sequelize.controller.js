@@ -53,7 +53,7 @@ module.exports = class SequelizeController extends ExtendController {
 				this.message.start(this)
 
 			} catch (error) {
-				global.err(__filename, function_name, error)
+				global.err(__filename, function_name, error.stack)
 			}
 		}
 
