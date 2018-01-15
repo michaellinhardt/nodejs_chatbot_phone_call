@@ -32,8 +32,13 @@ module.exports = class AnswerController extends ExtendController {
 		try {
 			this.get_answer()
 			this.replace_answer()
+			this.webchat_send_message(
+				this.brain.nexmo.conversation_uuid,
+				'Dolores',
+				this.brain.answer,
+			)
 			this.nexmo.answer()
-
+			
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}

@@ -1,6 +1,7 @@
+import io from 'socket.io-client'
 import websocket from 'websocket'
 
-import { _log, _express } from '../config'
+import { _socket } from '../config'
 
 import ExtendController from './extend.controller'
 
@@ -19,7 +20,8 @@ module.exports = class SequelizeController extends ExtendController {
 	async start (handler) {
 		const function_name = 'start()'
 		try {
-			this.init_config(handler)
+			this.init_handler(handler)
+			this.init_socket()
 			this.init_event()
 
 		} catch (error) {
@@ -28,16 +30,30 @@ module.exports = class SequelizeController extends ExtendController {
 	}
 
 	/*
-	** Method init_config
-	** This method set the websocket config
+	** Method init_socket
 	*/
-	init_config (handler) {
-		const function_name = 'init_config()'
+	init_socket () {
+		const function_name = 'init_socket()'
 		try {
-			this.event = new websocket.server({
-				httpServer: handler.express.server,
+			this.webchat = new io(_socket.url.webchat)
+			this.nexmo = new websocket.server({
+				httpServer: this.express.server,
 				autoAcceptConnections: true,
 			})
+
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+
+	/*
+	** Method init_handler
+	** This method set the websocket config
+	*/
+	init_handler (handler) {
+		const function_name = 'init_handler()'
+		try {
+			this.express = handler.express
 			this.brain = handler.brain
 			this.google = handler.google
 			this.db = handler.db
@@ -56,7 +72,9 @@ module.exports = class SequelizeController extends ExtendController {
 	init_event () {
 		const function_name = 'init_event()'
 		try {
-			this.event.on('connect', this.event_connect.bind(this));
+			this.nexmo.on('connect', this.nexmo_connect.bind(this));
+			this.webchat.on('connect', this.webchat_connect.bind(this));
+			this.webchat.on('disconnect', this.webchat_close.bind(this))
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -64,12 +82,12 @@ module.exports = class SequelizeController extends ExtendController {
 	}
 
 	/*
-	** Method event_message
+	** Method nexmo_message
 	** Called when message income from already open socket
 	** It requiere to have already an event_connet() call
 	*/
-	event_message (message) {
-		const function_name = 'event_message()'
+	nexmo_message (message) {
+		const function_name = 'nexmo_message()'
 		try {
 			if (message.type === 'binary') {
 				this.google.write(message.binaryData)
@@ -81,17 +99,17 @@ module.exports = class SequelizeController extends ExtendController {
 	}
 
 	/*
-	** Method event_close
+	** Method nexmo_close
 	** Called when message income from already open socket
 	** It requiere to have already an event_connet() call
 	*/
-	event_close () {
-		const function_name = 'event_close()'
+	nexmo_close () {
+		const function_name = 'nexmo_close()'
 		try {
 			this.db.call.close(this.brain.db.call.id)
 			this.google.clear_stream()
 
-			global.warn(__filename, function_name, `close socket ${this.brain.nexmo.from}`)
+			global.warn(__filename, function_name, `nexmo close socket ${this.brain.nexmo.from}`)
 
 		} catch (error) {
 			global.err(__filename, function_name, error)
@@ -99,15 +117,78 @@ module.exports = class SequelizeController extends ExtendController {
 	}
 
 	/*
-	** Method event_connect
+	** Method webchat_newcall
+	** Called when message income from already open socket
+	** It requiere to have already an event_connet() call
+	*/
+	webchat_newcall (phoneNumber) {
+		const function_name = 'webchat_newcall()'
+		try {
+			this.webchat.emit(_socket.event.webchat.NEW_CALL, phoneNumber)
+			global.warn(__filename, function_name, `send newcall to webchat`)
+
+		} catch (error) {
+			global.err(__filename, function_name, error)
+		}
+	}
+
+	/*
+	** Method webchat_close
+	** Called when message income from already open socket
+	** It requiere to have already an event_connet() call
+	*/
+	webchat_close () {
+		const function_name = 'webchat_close()'
+		try {
+			global.warn(__filename, function_name, `webchat close socket`)
+
+		} catch (error) {
+			global.err(__filename, function_name, error)
+		}
+	}
+
+	/*
+	** Method webchat_connect
 	** This method is called when we got a connect event
 	*/
-	event_connect (connection) {
-		const function_name = 'event_connect()'
+	webchat_connect () {
+		const function_name = 'webchat_connect()'
 		try {
-			global.warn(__filename, function_name, `open socket ${this.brain.nexmo.from}`)
-			connection.on('message', this.event_message.bind(this))
-			connection.on('close', this.event_close.bind(this))
+			global.warn(__filename, function_name, `webchat open socket`)
+
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+
+	/*
+	** Method webchat_send_message
+	** This method is called when we got a connect event
+	*/
+	webchat_send_message (phoneNumber, sender, message) {
+		const function_name = 'webchat_send_message()'
+		try {
+			this.webchat.emit(_socket.event.webchat.MESSAGE_FROM_ECHO_SERVER, {
+				message: message,
+				sender: sender,
+				phoneNumber: phoneNumber,
+			})
+
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+
+	/*
+	** Method nexmo_connect
+	** This method is called when we got a connect event
+	*/
+	nexmo_connect (connection) {
+		const function_name = 'nexmo_connect()'
+		try {
+			global.warn(__filename, function_name, `nexmo open socket ${this.brain.nexmo.from || ''}`)
+			connection.on('message', this.nexmo_message.bind(this))
+			connection.on('close', this.nexmo_close.bind(this))
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

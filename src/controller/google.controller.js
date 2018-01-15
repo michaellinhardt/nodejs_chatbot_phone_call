@@ -83,6 +83,12 @@ module.exports = class GoogleController extends ExtendController {
 						this.brain.message,
 					)
 
+					this.webchat_send_message(
+						this.brain.nexmo.conversation_uuid,
+						'Utilisateur',
+						this.brain.message,
+					)
+
 					this.recast.analyse()
 
 					// this.stream.destroy()
@@ -90,26 +96,26 @@ module.exports = class GoogleController extends ExtendController {
 					// this.client = null
 				}
 
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
+			}
 		}
-	}
 
-	/*
-	** Method new_stream ()
-	*/
-	async new_stream () {
-		const function_name = 'new_stream()'
-		try {
-			this.client = new speech.SpeechClient()
+		/*
+		** Method new_stream ()
+		*/
+		async new_stream () {
+			const function_name = 'new_stream()'
+			try {
+				this.client = new speech.SpeechClient()
 
-			this.streamExpire = (Date.now() / 1000) + _google.expirationTime
-			this.stream = this.client
-			.streamingRecognize(_google)
-			.on('error', (error) => global.err(__filename, function_name, error.stack))
-			.on('data', (data) => this.get_data(data))
+				this.streamExpire = (Date.now() / 1000) + _google.expirationTime
+				this.stream = this.client
+				.streamingRecognize(_google)
+				.on('error', (error) => global.err(__filename, function_name, error.stack))
+				.on('data', (data) => this.get_data(data))
 
-			// global.info(__filename, function_name, 'create a stream google')
+				// global.info(__filename, function_name, 'create a stream google')
 
 			} catch (error) {
 				global.err(__filename, function_name, error.stack)

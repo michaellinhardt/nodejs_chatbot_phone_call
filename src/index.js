@@ -44,8 +44,11 @@ class Dolores extends ExtendController {
 				brain,
 				express: this.express,
 				google: this.google,
-				db: this.sequelize
+				db: this.sequelize,
 			})
+			this.google.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
+			this.answer.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
+			this.nexmo.webchat_newcall = this.socket.webchat_newcall.bind(this.socket)
 
 			this.express.listen()
 

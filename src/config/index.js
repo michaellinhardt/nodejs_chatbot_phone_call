@@ -5,6 +5,7 @@ import _nexmo from './nexmo'
 import _nexmoapi from './nexmoapi'
 import _google from './google'
 import _recast from './recast'
+import _socket from './socket'
 
 module.exports = {
 	_log,
@@ -14,4 +15,5 @@ module.exports = {
 	_nexmoapi,
 	_google,
 	_recast,
+	_socket,
 }

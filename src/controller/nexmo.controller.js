@@ -51,6 +51,7 @@ module.exports = class NexmoController extends ExtendController {
 		try {
 			this.ncco_url_data(request.url)
 			this.ncco_save_data()
+			this.webchat_newcall(this.brain.nexmo.conversation_uuid)
 
 			response.writeHead(200, { 'Content-Type': 'application/json' });
 			response.end(JSON.stringify(_nexmo), 'utf-8');
