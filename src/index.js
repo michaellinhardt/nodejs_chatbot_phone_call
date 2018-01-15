@@ -31,15 +31,22 @@ class Dolores extends ExtendController {
 	async start () {
 		const function_name = 'start()'
 		try {
-			const brain = { }
+			const brain = { db: { } }
 			this.init_controllers()
-			this.nexmo.start({ brain })
+
+			await this.sequelize.start()
+			this.nexmo.start({ brain, db: this.sequelize })
 			this.answer.start({ brain, nexmo: this.nexmo })
 			this.recast.start({ brain, answer: this.answer })
 			this.google.start({ brain, recast: this.recast })
-			await this.sequelize.start()
 			this.express.init({ nexmo: this.nexmo })
-			this.socket.start({ express: this.express, google: this.google })
+			this.socket.start({
+				brain,
+				express: this.express,
+				google: this.google,
+				db: this.sequelize
+			})
+
 			this.express.listen()
 
 		} catch (error) {

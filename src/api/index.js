@@ -1,7 +1,7 @@
-import recast from './recast'
-import nexmo from './nexmo'
+import RecastApi from './recast.api'
+import NexmoApi from './nexmo.api'
 
 module.exports = {
-	recast,
-	nexmo,
+	RecastApi,
+	NexmoApi,
 }

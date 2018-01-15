@@ -1,8 +1,7 @@
-import fs from 'fs'
+import _ from 'lodash'
 
-import { nexmo }  from '../api'
-
-import { _log, _nexmo } from '../config'
+import { NexmoApi }  from '../api'
+import { _nexmo } from '../config'
 
 import ExtendController from './extend.controller'
 
@@ -19,8 +18,8 @@ module.exports = class NexmoController extends ExtendController {
 	start (handler) {
 		const function_name = 'start()'
 		try {
-			this.api = new nexmo()
-
+			this.db = handler.db
+			this.api = new NexmoApi()
 			this.brain = handler.brain
 
 		} catch (error) {
@@ -36,7 +35,6 @@ module.exports = class NexmoController extends ExtendController {
 		const function_name = 'post_events()'
 		try {
 			response.sendStatus(200)
-			// global.info(__filename, function_name, 'nexmo send data to /nexmo/events')
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -51,7 +49,8 @@ module.exports = class NexmoController extends ExtendController {
 	get_ncco (request, response) {
 		const function_name = 'get_ncco()'
 		try {
-			this.get_uuid(request)
+			this.ncco_url_data(request.url)
+			this.ncco_save_data()
 
 			response.writeHead(200, { 'Content-Type': 'application/json' });
 			response.end(JSON.stringify(_nexmo), 'utf-8');
@@ -63,16 +62,33 @@ module.exports = class NexmoController extends ExtendController {
 	}
 
 	/*
-	** Method answer
+	** Method ncco_url_data
 	*/
-	answer () {
-		const function_name = 'answer()'
+	ncco_url_data (url) {
+		const function_name = 'ncco_url_data()'
 		try {
-			this.api.talk(this.brain.client, this.brain.answer)
-			console.log('-------------------------------------------')
-			console.log(`User: ${this.brain.message}`)
-			console.log(`Bot: ${this.brain.answer}`)
-			console.log(`Intent: ${this.brain.intent}`)
+			this.brain.nexmo = { }
+			_.forEach((url.split('?')[1]).split('&'), param => {
+				this.brain.nexmo[(param.split('=')[0]).toLowerCase()] = param.split('=')[1]
+			})
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+
+	/*
+	** Method ncco_save_data
+	*/
+	async ncco_save_data () {
+		const function_name = 'ncco_save_data()'
+		try {
+			this.brain.db.user = await this.db.user.add(
+				this.brain.nexmo.from,
+			)
+			this.brain.db.call = await this.db.call.add(
+				this.brain.db.user.id,
+				this.brain.nexmo.conversation_uuid,
+			)
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -80,19 +96,25 @@ module.exports = class NexmoController extends ExtendController {
 	}
 
 	/*
-	** Method get_uuid
-	** This method is call when Nexmo post data on road /nexmo/events
+	** Method answer
 	*/
-	get_uuid (request) {
-		const function_name = 'get_uuid()'
+	async answer () {
+		const function_name = 'answer()'
 		try {
-			if (request.url.split('&uuid=')[1]) {
-				this.brain.client = request.url.split('&uuid=')[1]
-			}
+			this.db.message.add(
+				this.brain.db.call.convId,
+				this.brain.intent,
+				this.brain.message,
+				this.brain.answer,
+			)
+			console.log('-------------------------------------------')
+			console.log(`User: ${this.brain.message}`)
+			console.log(`Bot: ${this.brain.answer}`)
+			console.log(`Intent: ${this.brain.intent}`)
+			await this.api.talk(this.brain.client, this.brain.answer)
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}
 	}
-
 }

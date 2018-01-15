@@ -38,7 +38,9 @@ module.exports = class SequelizeController extends ExtendController {
 				httpServer: handler.express.server,
 				autoAcceptConnections: true,
 			})
+			this.brain = handler.brain
 			this.google = handler.google
+			this.db = handler.db
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -86,6 +88,7 @@ module.exports = class SequelizeController extends ExtendController {
 	event_close () {
 		const function_name = 'event_close()'
 		try {
+			this.db.call.close(this.brain.db.call.id)
 			global.warn(__filename, function_name, `close the websocket connection`)
 
 		} catch (error) {

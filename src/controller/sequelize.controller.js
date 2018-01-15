@@ -2,6 +2,14 @@ import Sequelize from 'sequelize'
 
 import { _log, _sequelize } from '../config'
 
+import {
+	CallModel,
+	ConversationModel,
+	MessageModel,
+	UserModel,
+} from '../model'
+
+
 import ExtendController from './extend.controller'
 
 /*
@@ -22,12 +30,32 @@ module.exports = class SequelizeController extends ExtendController {
 		try {
 			this.db = new Sequelize(_sequelize.database, _sequelize.username, _sequelize.password, { ..._sequelize, operatorsAliases: this.operators_aliases })
 			await this.db.authenticate()
+			this.init_table()
 			global.info(__filename, function_name, 'connection to mysql established')
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}
 	}
+
+		/*
+		** Method init_table
+		*/
+		init_table () {
+			const function_name = 'init_table()'
+			try {
+				this.call = new CallModel()
+				this.message = new MessageModel()
+				this.user = new UserModel()
+
+				this.user.start(this)
+				this.call.start(this)
+				this.message.start(this)
+
+			} catch (error) {
+				global.err(__filename, function_name, error)
+			}
+		}
 
 	/*
 	** Method operators_aliases

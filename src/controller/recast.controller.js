@@ -1,4 +1,4 @@
-import { recast }  from '../api'
+import { RecastApi }  from '../api'
 import { _recast } from '../config'
 
 import ExtendController from './extend.controller'
@@ -17,7 +17,7 @@ module.exports = class RecastController extends ExtendController {
 		const function_name = 'start()'
 		try {
 			const token = { ..._recast.token.dolores_demo }
-			this.api = new recast(token.user, token.bot, token.token)
+			this.api = new RecastApi(token.user, token.bot, token.token)
 
 			this.answer = handler.answer
 			this.brain = handler.brain
