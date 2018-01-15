@@ -54,7 +54,7 @@ module.exports = class NexmoController extends ExtendController {
 
 			response.writeHead(200, { 'Content-Type': 'application/json' });
 			response.end(JSON.stringify(_nexmo), 'utf-8');
-			global.info(__filename, function_name, 'sending ncco config to nexmo')
+			global.info(__filename, function_name, `incoming call from: ${this.brain.nexmo.from}`)
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -111,7 +111,7 @@ module.exports = class NexmoController extends ExtendController {
 			console.log(`User: ${this.brain.message}`)
 			console.log(`Bot: ${this.brain.answer}`)
 			console.log(`Intent: ${this.brain.intent}`)
-			await this.api.talk(this.brain.client, this.brain.answer)
+			await this.api.talk(this.brain.nexmo.uuid, this.brain.answer)
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

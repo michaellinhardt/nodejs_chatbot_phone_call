@@ -89,7 +89,9 @@ module.exports = class SequelizeController extends ExtendController {
 		const function_name = 'event_close()'
 		try {
 			this.db.call.close(this.brain.db.call.id)
-			global.warn(__filename, function_name, `close the websocket connection`)
+			this.google.clear_stream()
+
+			global.warn(__filename, function_name, `close socket ${this.brain.nexmo.from}`)
 
 		} catch (error) {
 			global.err(__filename, function_name, error)
@@ -103,7 +105,7 @@ module.exports = class SequelizeController extends ExtendController {
 	event_connect (connection) {
 		const function_name = 'event_connect()'
 		try {
-			global.warn(__filename, function_name, 'open connection by websocket')
+			global.warn(__filename, function_name, `open socket ${this.brain.nexmo.from}`)
 			connection.on('message', this.event_message.bind(this))
 			connection.on('close', this.event_close.bind(this))
 
