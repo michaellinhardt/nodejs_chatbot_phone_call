@@ -39,10 +39,14 @@ module.exports = class RecastController extends ExtendController {
 	async analyse (message) {
 		const function_name = 'analyse()'
 		try {
-			this.brain.result = await this.api.analyse(this.brain.message)
-			this.brain.intent = this.brain.result.intents && this.brain.result.intents[0] && this.brain.result.intents[0].slug || null
+
+			this.brain.recast = await this.api.analyse(this.brain.message)
+
+			this.brain.intent = this.brain.recast.intents && this.brain.recast.intents[0] && this.brain.recast.intents[0].slug || null
 			this.brain.context = this.brain.intent && this.brain.intent.split('-')[0] || null
 			this.brain.intent = this.brain.intent && this.brain.intent.split('-')[1] || null
+
+			this.brain.entities = this.brain.recast && this.brain.recast.entities || null
 
 			this.context.run()
 

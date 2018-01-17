@@ -14,17 +14,74 @@ export default class HorairesalleContext {
 
 	run () {
 		try {
-			const intent = this.brain.intent
-			const context = this.brain.context
+			this.brain.context = 'horairesalle'
+			this.brain.answer.index = 'horairesalle'
 
-			// pour l'instant elle redirige betement
+			if (!this.brain.answer.data.horairesalle) {
+				this.brain.answer.data.horairesalle = { }
+			}
 
-			this.brain.answer.index = context
-			this.brain.answer.label = intent
+
+			if (this[this.brain.intent]) {
+				this[this.brain.intent]()
+
+			} else {
+				this.default()
+			}
 
 		} catch (error) {
-			global.err(__filename, function_name, error.stack)
+			global.err(__filename, 'run()', error.stack)
 		}
 	}
 
+	default () {
+		try {
+			this.brain.answer.label = 'default'
+
+			// this.brain.answer.index = 'horairesalle'
+
+		} catch (error) {
+			global.err(__filename, 'default', error.stack)
+		}
+	}
+
+	gethoraires () {
+		try {
+			const planning = this.db.horairesalle.planning
+
+			this.gethoraires_datetime()
+
+			this.brain.answer.data.horairesalle.day = planning[this.dayId].day
+
+			console.log(planning[this.dayId].start)
+
+			if (!planning[this.dayId].start) {
+				this.brain.answer.label = 'gethoraires-close'
+
+			} else {
+				this.brain.answer.label = 'gethoraires-open'
+				this.brain.answer.data.horairesalle.start = planning[this.dayId].start
+				this.brain.answer.data.horairesalle.end = planning[this.dayId].end
+			}
+
+		} catch (error) {
+			global.err(__filename, 'gethoraires', error.stack)
+		}
+	}
+
+	gethoraires_datetime () {
+		try {
+			const entities = this.brain.entities
+
+			if (entities.datetime && entities.datetime[0] && entities.datetime[0].iso) {
+				this.dayId = (new Date(entities.datetime[0].iso)).getDay()
+
+			} else {
+				this.dayId = (new Date).getDay()
+			}
+
+		} catch (error) {
+			global.err(__filename, 'gethoraires', error.stack)
+		}
+	}
 }

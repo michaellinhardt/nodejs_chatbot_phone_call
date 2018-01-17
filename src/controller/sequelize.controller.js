@@ -2,12 +2,7 @@ import Sequelize from 'sequelize'
 
 import { _log, _sequelize } from '../config'
 
-import {
-	CallModel,
-	ConversationModel,
-	MessageModel,
-	UserModel,
-} from '../model'
+import models from '../model'
 
 
 import ExtendController from './extend.controller'
@@ -44,13 +39,15 @@ module.exports = class SequelizeController extends ExtendController {
 		init_table () {
 			const function_name = 'init_table()'
 			try {
-				this.call = new CallModel()
-				this.message = new MessageModel()
-				this.user = new UserModel()
+				this.call = new models.CallModel()
+				this.message = new models.MessageModel()
+				this.user = new models.UserModel()
+				this.horairesalle = new models.HorairesalleModel()
 
 				this.user.start(this)
 				this.call.start(this)
 				this.message.start(this)
+				this.horairesalle.start(this)
 
 			} catch (error) {
 				global.err(__filename, function_name, error.stack)
