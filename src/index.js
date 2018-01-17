@@ -1,18 +1,7 @@
 import { _log, _micro } from './config'
 
-import {
-	ExtendController,
-	LogController,
-	SequelizeController,
-	ExpressController,
-	NexmoController,
-	SocketController,
-	GoogleController,
-	RecastController,
-	BrainController,
-	AnswerController,
-	MicroController,
-} from './controller'
+import controllers from './controller'
+
 
 /*
 ** Class Dolores
@@ -22,7 +11,7 @@ import {
 **
 */
 
-class Dolores extends ExtendController {
+class Dolores extends controllers.ExtendController {
 	constructor () { super({ name: __filename }) }
 
 	/*
@@ -32,28 +21,9 @@ class Dolores extends ExtendController {
 	async start () {
 		const function_name = 'start()'
 		try {
-			const brain = { db: { } }
-			this.init_controllers()
-
-			await this.sequelize.start()
-			this.nexmo.start({ brain, db: this.sequelize })
-			this.answer.start({ brain, nexmo: this.nexmo })
-			this.recast.start({ brain, answer: this.answer })
-			this.google.start({ brain, db: this.sequelize, recast: this.recast })
-			this.express.start({ nexmo: this.nexmo })
-			if (_micro.enable) {
-				this.nexmo.api.talk = () => false
-				this.micro.start({ brain, google: this.google })
-			}
-			this.socket.start({
-				brain,
-				express: this.express,
-				google: this.google,
-				db: this.sequelize,
-			})
-			this.google.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
-			this.answer.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
-			this.nexmo.webchat_newcall = this.socket.webchat_newcall.bind(this.socket)
+			this.load_controller()
+			await this.start_controller()
+			this.link_controller()
 
 			this.express.listen()
 
@@ -63,22 +33,72 @@ class Dolores extends ExtendController {
 	}
 
 	/*
-	** Method init_controller()
+	** Method link_controller()
+	** Link some controller method to external controller method
+	*/
+
+	link_controller () {
+		const function_name = 'link_controller()'
+		try {
+			this.google.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
+			this.answer.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
+			this.nexmo.webchat_newcall = this.socket.webchat_newcall.bind(this.socket)
+
+		} catch (error) {
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
+		}
+	}
+
+	/*
+	** Method start_controller()
 	** This method instantiate all controller needed for Dolores
 	*/
 
-	init_controllers () {
-		const function_name = 'init_controller()'
+	async start_controller () {
+		const function_name = 'start_controller()'
 		try {
-			this.log = new LogController()
-			this.sequelize = new SequelizeController()
-			this.express = new ExpressController()
-			this.nexmo = new NexmoController()
-			this.socket = new SocketController()
-			this.google = new GoogleController()
-			this.recast = new RecastController()
-			this.answer = new AnswerController()
-			this.micro = new MicroController()
+			const brain = { db: { } }
+			await this.sequelize.start()
+			this.nexmo.start({ brain, db: this.sequelize })
+			this.answer.start({ brain, nexmo: this.nexmo })
+			this.context.start({ brain, db: this.sequelize, answer: this.answer })
+			this.recast.start({ brain, context: this.context, answer: this.answer })
+			this.google.start({ brain, recast: this.recast })
+			this.express.start({ nexmo: this.nexmo })
+			if (_micro.enable) {
+				this.nexmo.api.talk = () => true
+				this.micro.start({ brain, google: this.google })
+			}
+			this.socket.start({
+				brain,
+				express: this.express,
+				google: this.google,
+				db: this.sequelize,
+			})
+
+		} catch (error) {
+			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
+		}
+	}
+
+	/*
+	** Method load_controller()
+	** This method instantiate all controller needed for Dolores
+	*/
+
+	load_controller () {
+		const function_name = 'load_controller()'
+		try {
+			this.log = new controllers.LogController()
+			this.sequelize = new controllers.SequelizeController()
+			this.express = new controllers.ExpressController()
+			this.nexmo = new controllers.NexmoController()
+			this.socket = new controllers.SocketController()
+			this.google = new controllers.GoogleController()
+			this.recast = new controllers.RecastController()
+			this.answer = new controllers.AnswerController()
+			this.micro = new controllers.MicroController()
+			this.context = new controllers.ContextController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)

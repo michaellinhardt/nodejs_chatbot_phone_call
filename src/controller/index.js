@@ -8,6 +8,7 @@ import GoogleController from './google.controller'
 import RecastController from './recast.controller'
 import AnswerController from './answer.controller'
 import MicroController from './micro.controller'
+import ContextController from './context.controller'
 
 module.exports = {
 	ExtendController,
@@ -19,5 +20,6 @@ module.exports = {
 	GoogleController,
 	RecastController,
 	AnswerController,
+	ContextController,
 	MicroController,
 }
