@@ -30,4 +30,18 @@ export default class SmallContext {
 		}
 	}
 
+	/*
+	** Class run
+	** In this context, no logic. We just bind the intend and context matched
+	** with the corresponding index and label in answer folder
+	*/
+	default () {
+		try {
+			return false
+
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+
 }

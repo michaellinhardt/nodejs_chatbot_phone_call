@@ -1,3 +1,4 @@
+import prettyjson from 'prettyjson'
 import _ from 'lodash'
 
 import { NexmoApi }  from '../api'
@@ -103,10 +104,23 @@ module.exports = class NexmoController extends ExtendController {
 		const function_name = 'answer()'
 		try {
 			this.db.message.add(this.brain)
+
+			this.brain.db.messages.unshift({
+				convId: this.brain.nexmo.conversation_uuid,
+				intent: this.brain.intent,
+				context: this.brain.context,
+				message: this.brain.message,
+				answer:
+				{
+					index: this.brain.answer.index,
+					label: this.brain.answer.label,
+					response: this.brain.answer.response,
+				},
+			})
+
 			console.log('-------------------------------------------')
-			console.log(`User: ${this.brain.message}`)
-			console.log(`Bot: ${this.brain.answer.response}`)
-			console.log(`Intent: ${this.brain.intent}`)
+			console.log(prettyjson.render(this.brain.db.messages[0]))
+
 			await this.api.talk(this.brain.nexmo.uuid, this.brain.answer.response)
 
 		} catch (error) {

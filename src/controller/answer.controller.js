@@ -37,6 +37,7 @@ module.exports = class AnswerController extends ExtendController {
 				'Dolores',
 				this.brain.answer.response,
 			)
+
 			this.nexmo.answer()
 
 		} catch (error) {
