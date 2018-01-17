@@ -39,12 +39,14 @@ export default class HorairesalleContext {
 			const messages = this.brain.db.messages
 			const entities = this.brain.entities
 
-			if (messages[id].intent == 'gethoraires' && entities.datetime
+			if (messages[id].intent === 'gethoraires' && entities.datetime
 			&& entities.datetime[0] && entities.datetime[0].iso) {
+				console.log('ici')
 				this.gethoraires()
+				return true
 			}
 
-			// this.brain.answer.index = 'horairesalle'
+			return false
 
 		} catch (error) {
 			global.err(__filename, 'default', error.stack)
@@ -61,7 +63,7 @@ export default class HorairesalleContext {
 
 			if (!planning[this.dayId].start) {
 				this.brain.answer.label = 'gethoraires-close'
-				
+
 			} else {
 				this.brain.answer.label = 'gethoraires-open'
 				this.brain.answer.data.horairesalle.start = planning[this.dayId].start

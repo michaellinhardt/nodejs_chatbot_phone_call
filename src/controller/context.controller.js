@@ -70,8 +70,9 @@ module.exports = class ContextController extends ExtendController {
 			const messages = this.brain.db.messages
 
 			if (messages[id] && messages[id].context
-				&& this.context[messages[id]]
-				&& this.context[messages[id]].default(id)) {
+				&& this.context[messages[id].context]
+				&& this.context[messages[id].context].default(id)) {
+					this.brain.answer.index = messages[id].context
 					return true
 
 				} else if (!messages[id]) {
@@ -80,7 +81,7 @@ module.exports = class ContextController extends ExtendController {
 				}	else {
 					return this.previous_context(id + 1)
 				}
-				
+
 			} catch (error) {
 				global.err(__filename, function_name, error.stack)
 			}
