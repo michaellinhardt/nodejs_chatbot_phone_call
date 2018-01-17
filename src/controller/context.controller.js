@@ -60,7 +60,7 @@ module.exports = class ContextController extends ExtendController {
 			global.err(__filename, function_name, error.stack)
 		}
 	}
-	
+
 	/*
 	** Method previous_context
 	*/
@@ -70,7 +70,8 @@ module.exports = class ContextController extends ExtendController {
 			const messages = this.brain.db.messages
 
 			if (messages[id] && messages[id].context
-				&& this.context[messages[id].default(id)]) {
+				&& this.context[messages[id]]
+				&& this.context[messages[id]].default(id)) {
 					return true
 
 				} else if (!messages[id]) {
@@ -79,6 +80,7 @@ module.exports = class ContextController extends ExtendController {
 				}	else {
 					return this.previous_context(id + 1)
 				}
+				
 			} catch (error) {
 				global.err(__filename, function_name, error.stack)
 			}
