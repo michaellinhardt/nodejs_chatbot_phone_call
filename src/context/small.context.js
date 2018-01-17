@@ -1,3 +1,5 @@
+import { small } from '../answer'
+
 export default class SmallContext {
 	start (handler) {
 		const function_name = 'start()'
@@ -22,11 +24,16 @@ export default class SmallContext {
 			const intent = this.brain.intent
 			const context = this.brain.context
 
-			this.brain.answer.index = context
-			this.brain.answer.label = intent
+			if (small && small[intent]) {
+				this.brain.answer.index = context
+				this.brain.answer.label = intent
+				return true
+			}
+
+			return false
 
 		} catch (error) {
-			global.err(__filename, function_name, error.stack)
+			global.err(__filename, 'run()', error.stack)
 		}
 	}
 
@@ -40,7 +47,7 @@ export default class SmallContext {
 			return false
 
 		} catch (error) {
-			global.err(__filename, function_name, error.stack)
+			global.err(__filename, 'default()', error.stack)
 		}
 	}
 

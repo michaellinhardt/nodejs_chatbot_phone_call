@@ -18,15 +18,27 @@ module.exports = class MicroController extends ExtendController {
 	**
 	** object Name: description
 	*/
-	start (handler) {
+	async start (handler) {
 		const function_name = 'start()'
 		try {
+			this.db = handler.db
 			this.brain = handler.brain
 			this.google = handler.google
+			this.context = handler.context
 			this.fill_brain()
 			this.record = record
 			this.google.new_stream()
 			this.start_record()
+
+			this.brain.db.user = await this.db.user.add(
+				this.brain.nexmo.from,
+			)
+			
+			this.brain.recast = { }
+			this.brain.intent = 'default'
+			this.brain.context = 'welcome'
+			this.brain.entities = []
+			this.context.run()
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

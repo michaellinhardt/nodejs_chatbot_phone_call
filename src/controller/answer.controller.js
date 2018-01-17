@@ -44,6 +44,7 @@ module.exports = class AnswerController extends ExtendController {
 			if (_synthesizer.enable) {
 				this.synthesizer.talk(this.brain.answer.response)
 			}
+
 			this.nexmo.answer()
 
 		} catch (error) {
@@ -79,7 +80,7 @@ module.exports = class AnswerController extends ExtendController {
 		try {
 			_.forEach(this.brain.answer.response.match(/\{(.*?)\}/g), (value) => {
 				const strPathToData = value.replace('{', '').replace('}', '')
-				const targetedData = _.get(this.brain.answer.data, strPathToData)
+				const targetedData = _.get(this.brain.db, strPathToData)
 				this.brain.answer.response = this.brain.answer.response.replace(value, targetedData)
 			})
 		} catch (error) {

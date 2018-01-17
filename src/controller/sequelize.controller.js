@@ -20,9 +20,10 @@ module.exports = class SequelizeController extends ExtendController {
 	** This method connect sequelize to the db
 	** This is async because we wait to be connected before continue
 	*/
-	async start () {
+	async start (handler) {
 		const function_name = 'start()'
 		try {
+			this.brain = handler.brain
 			this.db = new Sequelize(_sequelize.database, _sequelize.username, _sequelize.password, { ..._sequelize, operatorsAliases: this.operators_aliases })
 			await this.db.authenticate()
 			this.init_table()
@@ -48,7 +49,7 @@ module.exports = class SequelizeController extends ExtendController {
 			this.call.start(this)
 			this.message.start(this)
 			this.horairesalle.start(this)
-
+			
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}

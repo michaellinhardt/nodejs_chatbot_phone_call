@@ -22,8 +22,8 @@ class Dolores extends controllers.ExtendController {
 		const function_name = 'start()'
 		try {
 			this.load_controller()
-			await this.start_controller()
 			this.link_controller()
+			await this.start_controller()
 
 			this.express.listen()
 
@@ -59,7 +59,7 @@ class Dolores extends controllers.ExtendController {
 		const function_name = 'start_controller()'
 		try {
 			const brain = { db: { messages: [] } }
-			await this.sequelize.start()
+			await this.sequelize.start({brain})
 			this.nexmo.start({ brain, db: this.sequelize })
 			if (_synthesizer.enable) {
 				this.synthesizer.start({ brain, db: this.sequelize })
@@ -74,13 +74,19 @@ class Dolores extends controllers.ExtendController {
 				express: this.express,
 				google: this.google,
 				db: this.sequelize,
+				context: this.context,
 			})
 			if (_micro.enable) {
 				this.nexmo.api.talk = () => true
-				this.micro.start({ brain, google: this.google })
+				this.micro.start({
+					brain,
+					db: this.sequelize,
+					context: this.context,
+					google: this.google,
+				})
 				this.socket.webchat_newcall(brain.nexmo.conversation_uuid)
 			}
-
+			
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}

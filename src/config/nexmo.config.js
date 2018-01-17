@@ -5,11 +5,6 @@
 
 module.exports = [
 	{
-		"action": "talk",
-		"text": "Ici Daulaurésse.",
-		"voiceName": "Celine",
-	},
-	{
 		"action": "connect",
 		"eventUrl":
 		[

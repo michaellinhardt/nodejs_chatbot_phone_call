@@ -14,10 +14,11 @@ const UserSchema = {
 }
 
 export default class UserModel {
-	start (sequelize) {
+	start (handler) {
 		const function_name = 'start()'
 		try {
-			this.schema = sequelize.db.define('user', UserSchema)
+			this.brain = handler.brain
+			this.schema = handler.db.define('user', UserSchema)
 			this.schema.sync()
 
 		} catch (error) {
@@ -26,14 +27,27 @@ export default class UserModel {
 	}
 
 	async add (phoneNumber) {
+		const function_name = 'add()'
 		try {
-			const function_name = 'add()'
 			return (await this.schema.findOrCreate({
 				where: {
 					phoneNumber: phoneNumber,
 				},
 				defaults: {},
 			}))[0].dataValues
+
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
+		}
+	}
+	
+	async addPrenom (prenom) {
+		const function_name = 'add()'
+		try {
+			return (await this.schema.update(
+				{ firstName: prenom },
+				{	where: { phoneNumber: this.brain.db.user.phoneNumber } }
+			))
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

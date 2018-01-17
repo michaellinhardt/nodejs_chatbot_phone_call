@@ -3,5 +3,5 @@
 */
 
 module.exports = {
-	enable: false,
+	enable: true,
 }
