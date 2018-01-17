@@ -24,10 +24,11 @@ export default class HorairesalleContext {
 
 			if (this[this.brain.intent]) {
 				this[this.brain.intent]()
+				return true
 
-			} else {
-				this.default()
 			}
+
+			return false
 
 		} catch (error) {
 			global.err(__filename, 'run()', error.stack)
@@ -42,6 +43,11 @@ export default class HorairesalleContext {
 			if (messages[id].intent === 'gethoraires' && entities.datetime
 			&& entities.datetime[0] && entities.datetime[0].iso) {
 				this.gethoraires()
+				return true
+			} else if (messages[id].intent === 'inscrire'
+			&& (this.brain.intent === 'oui' || this.brain.intent === 'non')
+			&& id < 3) {
+				this.inscrire_reponse()
 				return true
 			}
 
@@ -67,6 +73,29 @@ export default class HorairesalleContext {
 				this.brain.answer.label = 'gethoraires-open'
 				this.brain.answer.data.horairesalle.start = planning[this.dayId].start
 				this.brain.answer.data.horairesalle.end = planning[this.dayId].end
+			}
+
+		} catch (error) {
+			global.err(__filename, 'gethoraires', error.stack)
+		}
+	}
+
+	inscrire () {
+		try {
+			this.brain.answer.label = 'inscrire-ask'
+
+		} catch (error) {
+			global.err(__filename, 'gethoraires', error.stack)
+		}
+	}
+
+	inscrire_reponse () {
+		try {
+			if (this.brain.intent === 'oui') {
+				this.brain.answer.label = 'inscrire-employe'
+
+			} else {
+				this.brain.answer.label = 'inscrire-autre'
 			}
 
 		} catch (error) {

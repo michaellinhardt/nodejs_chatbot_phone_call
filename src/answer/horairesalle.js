@@ -11,4 +11,16 @@ module.exports = {
 	[
 		"Malheureusement, {horairesalle.day} la salle de sport est fermé.",
 	],
+	"inscrire-ask":
+	[
+		"Êtes vous un employé de Be-Wise.",
+	],
+	"inscrire-employe":
+	[
+		"Pour vous inscrire il faut remplir le formulaire que vous trouverez sur le site intranet.",
+	],
+	"inscrire-autre":
+	[
+		"La salle de sport est exclusivement réservé au employé.",
+	],
 }
