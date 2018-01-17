@@ -41,7 +41,6 @@ export default class HorairesalleContext {
 
 			if (messages[id].intent === 'gethoraires' && entities.datetime
 			&& entities.datetime[0] && entities.datetime[0].iso) {
-				console.log('ici')
 				this.gethoraires()
 				return true
 			}

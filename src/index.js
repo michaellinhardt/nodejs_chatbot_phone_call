@@ -43,6 +43,7 @@ class Dolores extends controllers.ExtendController {
 			this.google.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
 			this.answer.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
 			this.nexmo.webchat_newcall = this.socket.webchat_newcall.bind(this.socket)
+			this.micro.webchat_newcall = this.socket.webchat_newcall.bind(this.socket)
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
@@ -68,16 +69,17 @@ class Dolores extends controllers.ExtendController {
 			this.recast.start({ brain, context: this.context, answer: this.answer })
 			this.google.start({ brain, recast: this.recast })
 			this.express.start({ nexmo: this.nexmo })
-			if (_micro.enable) {
-				this.nexmo.api.talk = () => true
-				this.micro.start({ brain, google: this.google })
-			}
 			this.socket.start({
 				brain,
 				express: this.express,
 				google: this.google,
 				db: this.sequelize,
 			})
+			if (_micro.enable) {
+				this.nexmo.api.talk = () => true
+				this.micro.start({ brain, google: this.google })
+				this.socket.webchat_newcall(brain.nexmo.conversation_uuid)
+			}
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
