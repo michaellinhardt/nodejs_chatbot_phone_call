@@ -1,7 +1,7 @@
 import express from 'express'
 import http from  'http'
 
-import { _log, _express } from '../config'
+import { _express } from '../config'
 
 import ExtendController from './extend.controller'
 

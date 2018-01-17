@@ -1,4 +1,4 @@
-import { _log, _micro } from './config'
+import { _log, _micro, _synthesizer } from './config'
 
 import controllers from './controller'
 
@@ -60,7 +60,10 @@ class Dolores extends controllers.ExtendController {
 			const brain = { db: { messages: [] } }
 			await this.sequelize.start()
 			this.nexmo.start({ brain, db: this.sequelize })
-			this.answer.start({ brain, nexmo: this.nexmo })
+			if (_synthesizer.enable) {
+				this.synthesizer.start({ brain, db: this.sequelize })
+			}
+			this.answer.start({ brain, nexmo: this.nexmo, synthesizer: this.synthesizer })
 			this.context.start({ brain, db: this.sequelize, answer: this.answer })
 			this.recast.start({ brain, context: this.context, answer: this.answer })
 			this.google.start({ brain, recast: this.recast })
@@ -99,6 +102,7 @@ class Dolores extends controllers.ExtendController {
 			this.answer = new controllers.AnswerController()
 			this.micro = new controllers.MicroController()
 			this.context = new controllers.ContextController()
+			this.synthesizer = new controllers.SynthesizerController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)

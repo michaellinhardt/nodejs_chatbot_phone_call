@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize'
 
-import { _log, _sequelize } from '../config'
+import { _sequelize } from '../config'
 
 import models from '../model'
 
@@ -33,26 +33,26 @@ module.exports = class SequelizeController extends ExtendController {
 		}
 	}
 
-		/*
-		** Method init_table
-		*/
-		init_table () {
-			const function_name = 'init_table()'
-			try {
-				this.call = new models.CallModel()
-				this.message = new models.MessageModel()
-				this.user = new models.UserModel()
-				this.horairesalle = new models.HorairesalleModel()
+	/*
+	** Method init_table
+	*/
+	init_table () {
+		const function_name = 'init_table()'
+		try {
+			this.call = new models.CallModel()
+			this.message = new models.MessageModel()
+			this.user = new models.UserModel()
+			this.horairesalle = new models.HorairesalleModel()
 
-				this.user.start(this)
-				this.call.start(this)
-				this.message.start(this)
-				this.horairesalle.start(this)
+			this.user.start(this)
+			this.call.start(this)
+			this.message.start(this)
+			this.horairesalle.start(this)
 
-			} catch (error) {
-				global.err(__filename, function_name, error.stack)
-			}
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
 		}
+	}
 
 	/*
 	** Method operators_aliases

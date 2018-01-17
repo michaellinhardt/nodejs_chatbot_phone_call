@@ -10,5 +10,5 @@ module.exports = {
 	},
 	interimResults: false,
 	singleUtterance: false,
-	expirationTime: 30,
+	expirationTime: 300,
 }

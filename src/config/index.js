@@ -8,6 +8,7 @@ import _recast from './recast.config'
 import _socket from './socket.config'
 import _micro from './micro.config'
 import _context from './context.config'
+import _synthesizer from './synthesizer.config'
 
 module.exports = {
 	_log,
@@ -20,4 +21,5 @@ module.exports = {
 	_socket,
 	_micro,
 	_context,
+	_synthesizer,
 }

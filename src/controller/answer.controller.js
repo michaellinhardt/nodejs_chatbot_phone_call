@@ -1,5 +1,7 @@
 import _ from 'lodash'
 
+import { _synthesizer } from '../config'
+
 import answer from '../answer'
 
 import ExtendController from './extend.controller'
@@ -18,6 +20,7 @@ module.exports = class AnswerController extends ExtendController {
 		try {
 			this.brain = handler.brain
 			this.nexmo = handler.nexmo
+			this.synthesizer = handler.synthesizer
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -38,6 +41,9 @@ module.exports = class AnswerController extends ExtendController {
 				this.brain.answer.response,
 			)
 
+			if (_synthesizer.enable) {
+				this.synthesizer.talk(this.brain.answer.response)
+			}
 			this.nexmo.answer()
 
 		} catch (error) {
