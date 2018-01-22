@@ -61,7 +61,8 @@ module.exports = class MicroController extends ExtendController {
 		const function_name = 'fill_brain()'
 		try {
 			this.brain.nexmo = _micro.fill.nexmo
-			this.brain.db = _micro.fill.db
+			this.brain.db.user = _micro.fill.db.user
+			this.brain.db.call = _micro.fill.db.call
 
 			const randomConvId = `${this.brain.nexmo.conversation_uuid}-${Math.floor(Math.random() * 999999) + 1000000}`
 			this.brain.nexmo.conversation_uuid = randomConvId

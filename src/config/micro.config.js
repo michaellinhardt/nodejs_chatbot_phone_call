@@ -3,7 +3,7 @@
 */
 
 module.exports = {
-	enable: false,
+	enable: true,
 	stream:
 	{
 		sampleRateHertz: 16000,

@@ -57,7 +57,7 @@ class Dolores extends controllers.ExtendController {
 	async start_controller () {
 		const function_name = 'start_controller()'
 		try {
-			const brain = { db: { } }
+			const brain = { db: { messages: [] } }
 			await this.sequelize.start()
 			this.nexmo.start({ brain, db: this.sequelize })
 			this.answer.start({ brain, nexmo: this.nexmo })

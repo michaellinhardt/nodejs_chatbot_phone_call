@@ -1,3 +1,4 @@
+import prettyjson from 'prettyjson'
 import _ from 'lodash'
 
 import { NexmoApi }  from '../api'
@@ -50,67 +51,86 @@ module.exports = class NexmoController extends ExtendController {
 		const function_name = 'get_ncco()'
 		try {
 			this.ncco_url_data(request.url)
-			this.ncco_save_data()
-			this.webchat_newcall(this.brain.nexmo.conversation_uuid)
 
-			response.writeHead(200, { 'Content-Type': 'application/json' });
-			response.end(JSON.stringify(_nexmo), 'utf-8');
-			global.info(__filename, function_name, `incoming call from: ${this.brain.nexmo.from}`)
+			if (this.brain.db.messages[0]
+				&& this.brain.db.messages[0].convId !== this.brain.nexmo.conversation_uuid) {
+					this.brain.db.messages = []
+				}
 
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
+				this.ncco_save_data()
+				this.webchat_newcall(this.brain.nexmo.conversation_uuid)
+
+				response.writeHead(200, { 'Content-Type': 'application/json' });
+				response.end(JSON.stringify(_nexmo), 'utf-8');
+				global.info(__filename, function_name, `incoming call from: ${this.brain.nexmo.from}`)
+
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
+			}
+		}
+
+		/*
+		** Method ncco_url_data
+		*/
+		ncco_url_data (url) {
+			const function_name = 'ncco_url_data()'
+			try {
+				this.brain.nexmo = { }
+				_.forEach((url.split('?')[1]).split('&'), param => {
+					this.brain.nexmo[(param.split('=')[0]).toLowerCase()] = param.split('=')[1]
+				})
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
+			}
+		}
+
+		/*
+		** Method ncco_save_data
+		*/
+		async ncco_save_data () {
+			const function_name = 'ncco_save_data()'
+			try {
+				this.brain.db.user = await this.db.user.add(
+					this.brain.nexmo.from,
+				)
+				this.brain.db.call = await this.db.call.add(
+					this.brain.db.user.id,
+					this.brain.nexmo.conversation_uuid,
+				)
+
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
+			}
+		}
+
+		/*
+		** Method answer
+		*/
+		async answer () {
+			const function_name = 'answer()'
+			try {
+				this.db.message.add(this.brain)
+
+				this.brain.db.messages.unshift({
+					convId: this.brain.nexmo.conversation_uuid,
+					intent: this.brain.intent,
+					context: this.brain.context,
+					message: this.brain.message,
+					answer:
+					{
+						index: this.brain.answer.index,
+						label: this.brain.answer.label,
+						response: this.brain.answer.response,
+					},
+				})
+
+				console.log('-------------------------------------------')
+				console.log(prettyjson.render(this.brain.db.messages[0]))
+
+				await this.api.talk(this.brain.nexmo.uuid, this.brain.answer.response)
+
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
+			}
 		}
 	}
-
-	/*
-	** Method ncco_url_data
-	*/
-	ncco_url_data (url) {
-		const function_name = 'ncco_url_data()'
-		try {
-			this.brain.nexmo = { }
-			_.forEach((url.split('?')[1]).split('&'), param => {
-				this.brain.nexmo[(param.split('=')[0]).toLowerCase()] = param.split('=')[1]
-			})
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
-		}
-	}
-
-	/*
-	** Method ncco_save_data
-	*/
-	async ncco_save_data () {
-		const function_name = 'ncco_save_data()'
-		try {
-			this.brain.db.user = await this.db.user.add(
-				this.brain.nexmo.from,
-			)
-			this.brain.db.call = await this.db.call.add(
-				this.brain.db.user.id,
-				this.brain.nexmo.conversation_uuid,
-			)
-
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
-		}
-	}
-
-	/*
-	** Method answer
-	*/
-	async answer () {
-		const function_name = 'answer()'
-		try {
-			this.db.message.add(this.brain)
-			console.log('-------------------------------------------')
-			console.log(`User: ${this.brain.message}`)
-			console.log(`Bot: ${this.brain.answer.response}`)
-			console.log(`Intent: ${this.brain.intent}`)
-			await this.api.talk(this.brain.nexmo.uuid, this.brain.answer.response)
-
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
-		}
-	}
-}

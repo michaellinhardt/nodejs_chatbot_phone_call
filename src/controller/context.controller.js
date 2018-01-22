@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import context from '../context'
 
 import { _context } from '../config'
@@ -36,34 +38,20 @@ module.exports = class ContextController extends ExtendController {
 	}
 
 	/*
-	** Method previous_context
-	*/
-	previous_context () {
-		const function_name = 'previous_context()'
-		try {
-			// watch db result inside this.brain to find the last context
-			// when find one, call it to see if he can resolve
-			// repeat if not
-			// not implemented yet
-
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
-		}
-	}
-
-	/*
 	** Method run
 	*/
 	run () {
 		const function_name = 'run()'
 		try {
 			const context = this.brain.context
+			this.brain.answer.index = _context.default.index
+			this.brain.answer.label = _context.default.label
 
 			if (this.context[context]) {
 				this.context[context].run()
 
 			} else {
-				this.previous_context()
+				this.previous_context(0)
 			}
 
 			this.answer.build()
@@ -74,35 +62,61 @@ module.exports = class ContextController extends ExtendController {
 	}
 
 	/*
-	** Method start_context
+	** Method previous_context
 	*/
-	start_context () {
-		const function_name = 'start_context()'
+	previous_context (id) {
+		const function_name = 'previous_context()'
 		try {
-			this.handler = {
-				brain: this.brain,
-				db: this.db,
+			const messages = this.brain.db.messages
+
+			if (messages[id] && messages[id].context
+				&& this.context[messages[id].context]
+				&& this.context[messages[id].context].default(id)) {
+					this.brain.answer.index = messages[id].context
+					return true
+
+				} else if (!messages[id]) {
+					return false
+
+				}	else {
+					return this.previous_context(id + 1)
+				}
+
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
 			}
-			this.context.horairesalle.start(this.handler)
-			this.context.small.start(this.handler)
+		}
 
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
+		/*
+		** Method start_context
+		*/
+		start_context () {
+			const function_name = 'start_context()'
+			try {
+				this.handler = {
+					brain: this.brain,
+					db: this.db,
+				}
+				this.context.horairesalle.start(this.handler)
+				this.context.small.start(this.handler)
+
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
+			}
+		}
+
+		/*
+		** Method load_context
+		*/
+		load_context () {
+			const function_name = 'load_context()'
+			try {
+				this.context = { }
+				this.context.horairesalle = new context.HorairesalleContext()
+				this.context.small = new context.SmallContext()
+
+			} catch (error) {
+				global.err(__filename, function_name, error.stack)
+			}
 		}
 	}
-
-	/*
-	** Method load_context
-	*/
-	load_context () {
-		const function_name = 'load_context()'
-		try {
-			this.context = { }
-			this.context.horairesalle = new context.HorairesalleContext()
-			this.context.small = new context.SmallContext()
-
-		} catch (error) {
-			global.err(__filename, function_name, error.stack)
-		}
-	}
-}
