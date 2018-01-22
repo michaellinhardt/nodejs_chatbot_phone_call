@@ -21,6 +21,7 @@ module.exports = class ContextController extends ExtendController {
 			this.answer = handler.answer
 
 			this.brain.answer = { }
+			this.brain.answer.data = { }
 			this.brain.answer.index = _context.default.index
 			this.brain.answer.label = _context.default.label
 

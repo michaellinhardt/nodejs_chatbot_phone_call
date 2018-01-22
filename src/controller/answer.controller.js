@@ -52,6 +52,7 @@ module.exports = class AnswerController extends ExtendController {
 		try {
 			const index = this.brain.answer.index
 			const label = this.brain.answer.label
+
 			this.brain.answer.response = answer[index] && answer[index][label] || answer.small.default
 			if (_.isEmpty(this.brain.answer.response)) {
 				throw new Error(`cant find label '${label}' in index '${index}.js'`)
@@ -71,8 +72,7 @@ module.exports = class AnswerController extends ExtendController {
 		try {
 			_.forEach(this.brain.answer.response.match(/\{(.*?)\}/g), (value) => {
 				const strPathToData = value.replace('{', '').replace('}', '')
-				// const targetedData = _.get(data, strPathToData) -> pas de donnee a remplacer atm
-				const targetedData = _.get({ }, strPathToData)
+				const targetedData = _.get(this.brain.answer.data, strPathToData)
 				this.brain.answer.response = this.brain.answer.response.replace(value, targetedData)
 			})
 		} catch (error) {
