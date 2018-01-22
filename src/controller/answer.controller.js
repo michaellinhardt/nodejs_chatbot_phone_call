@@ -35,10 +35,10 @@ module.exports = class AnswerController extends ExtendController {
 			this.webchat_send_message(
 				this.brain.nexmo.conversation_uuid,
 				'Dolores',
-				this.brain.answer,
+				this.brain.answer.response,
 			)
 			this.nexmo.answer()
-			
+
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}
@@ -50,12 +50,13 @@ module.exports = class AnswerController extends ExtendController {
 	get_answer () {
 		const function_name = 'get_answer()'
 		try {
-			this.brain.answer = answer[this.brain.context] && answer[this.brain.context][this.brain.intent]
-			|| answer.small.default
-			if (_.isEmpty(this.brain.answer)) {
-				throw new Error(`cant find intent '${this.brain.intent}' in answer file '${this.brain.context}.js'`)
+			const index = this.brain.answer.index
+			const label = this.brain.answer.label
+			this.brain.answer.response = answer[index] && answer[index][label] || answer.small.default
+			if (_.isEmpty(this.brain.answer.response)) {
+				throw new Error(`cant find label '${label}' in index '${index}.js'`)
 			}
-			this.brain.answer = this.brain.answer[Math.floor(Math.random() * this.brain.answer.length)]
+			this.brain.answer.response = this.brain.answer.response[Math.floor(Math.random() * this.brain.answer.response.length)]
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -68,11 +69,11 @@ module.exports = class AnswerController extends ExtendController {
 	replace_answer () {
 		const function_name = 'replace_answer()'
 		try {
-			_.forEach(this.brain.answer.match(/\{(.*?)\}/g), (value) => {
+			_.forEach(this.brain.answer.response.match(/\{(.*?)\}/g), (value) => {
 				const strPathToData = value.replace('{', '').replace('}', '')
 				// const targetedData = _.get(data, strPathToData) -> pas de donnee a remplacer atm
 				const targetedData = _.get({ }, strPathToData)
-				this.brain.answer = this.brain.answer.replace(value, targetedData)
+				this.brain.answer.response = this.brain.answer.response.replace(value, targetedData)
 			})
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

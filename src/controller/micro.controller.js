@@ -63,6 +63,10 @@ module.exports = class MicroController extends ExtendController {
 			this.brain.nexmo = _micro.fill.nexmo
 			this.brain.db = _micro.fill.db
 
+			const randomConvId = `${this.brain.nexmo.conversation_uuid}-${Math.floor(Math.random() * 999999) + 1000000}`
+			this.brain.nexmo.conversation_uuid = randomConvId
+			this.brain.db.call.convId = randomConvId
+
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}

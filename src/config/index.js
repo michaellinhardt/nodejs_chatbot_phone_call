@@ -7,6 +7,7 @@ import _google from './google.config'
 import _recast from './recast.config'
 import _socket from './socket.config'
 import _micro from './micro.config'
+import _context from './context.config'
 
 module.exports = {
 	_log,
@@ -18,4 +19,5 @@ module.exports = {
 	_recast,
 	_socket,
 	_micro,
+	_context,
 }

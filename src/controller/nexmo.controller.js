@@ -102,17 +102,12 @@ module.exports = class NexmoController extends ExtendController {
 	async answer () {
 		const function_name = 'answer()'
 		try {
-			this.db.message.add(
-				this.brain.db.call.convId,
-				'bot',
-				this.brain.intent,
-				this.brain.answer,
-			)
+			this.db.message.add(this.brain)
 			console.log('-------------------------------------------')
 			console.log(`User: ${this.brain.message}`)
-			console.log(`Bot: ${this.brain.answer}`)
+			console.log(`Bot: ${this.brain.answer.response}`)
 			console.log(`Intent: ${this.brain.intent}`)
-			await this.api.talk(this.brain.nexmo.uuid, this.brain.answer)
+			await this.api.talk(this.brain.nexmo.uuid, this.brain.answer.response)
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

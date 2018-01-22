@@ -76,13 +76,7 @@ module.exports = class GoogleController extends ExtendController {
 				if (message) {
 
 					this.brain.message = message
-					this.db.message.add(
-						this.brain.nexmo.conversation_uuid,
-						'user',
-						this.brain.intent,
-						this.brain.message,
-					)
-
+					
 					this.webchat_send_message(
 						this.brain.nexmo.conversation_uuid,
 						'Utilisateur',

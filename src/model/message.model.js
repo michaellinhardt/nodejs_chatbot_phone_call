@@ -27,19 +27,25 @@ export default class MessageModel {
 			global.err(__filename, function_name, error.stack)
 		}
 	}
-
-	async add (convId, from, intent, message) {
+	
+	async add (brain) {
 		try {
 			const function_name = 'add()'
 			await this.schema.create({
-				convId: convId,
-				from: from,
-				intent: intent,
-				message: message,
+				convId: brain.nexmo.conversation_uuid,
+				from: 'user',
+				intent: `${brain.context}/${brain.intent}`,
+				message: brain.message,
+			})
+			this.schema.create({
+				convId: brain.nexmo.conversation_uuid,
+				from: 'bot',
+				intent: `${brain.answer.index}/${brain.answer.label}`,
+				message: brain.answer.response,
 			})
 
 		} catch (error) {
-			global.err(__filename, function_name, error.stack)
+			global.err(__filename, 'add()', error.stack)
 		}
 	}
 }

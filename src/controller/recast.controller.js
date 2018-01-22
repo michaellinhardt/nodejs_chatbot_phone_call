@@ -1,5 +1,5 @@
 import { RecastApi }  from '../api'
-import { _recast } from '../config'
+import { _recast, _context } from '../config'
 
 import ExtendController from './extend.controller'
 
@@ -19,8 +19,11 @@ module.exports = class RecastController extends ExtendController {
 			const token = { ..._recast.token.dolores_demo }
 			this.api = new RecastApi(token.user, token.bot, token.token)
 
-			this.answer = handler.answer
+			this.context = handler.context
 			this.brain = handler.brain
+
+			this.brain.context = _context.default.index
+			this.brain.intent = _context.default.label
 
 			global.info(__filename, function_name, 'setting up recast api')
 
@@ -39,9 +42,9 @@ module.exports = class RecastController extends ExtendController {
 			this.brain.result = await this.api.analyse(this.brain.message)
 			this.brain.intent = this.brain.result.intents && this.brain.result.intents[0] && this.brain.result.intents[0].slug || null
 			this.brain.context = this.brain.intent && this.brain.intent.split('-')[0] || null
-			this.brain.intent = this.brain.intent && this.brain.intent.replace('small-', '')
+			this.brain.intent = this.brain.intent && this.brain.intent.split('-')[1] || null
 
-			this.answer.build()
+			this.context.run()
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)

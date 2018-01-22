@@ -3,7 +3,7 @@
 */
 
 module.exports = {
-	enable: false,
+	enable: true,
 	stream:
 	{
 		sampleRateHertz: 16000,
@@ -22,7 +22,7 @@ module.exports = {
 		},
 		db: {
 			user: { id: '1' },
-			call: { convId: '1'},
+			call: { convId: 'debug'},
 		},
 	},
 }
