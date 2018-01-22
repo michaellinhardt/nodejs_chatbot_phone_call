@@ -53,6 +53,7 @@ module.exports = class SequelizeController extends ExtendController {
 	init_handler (handler) {
 		const function_name = 'init_handler()'
 		try {
+			this.context = handler.context
 			this.express = handler.express
 			this.brain = handler.brain
 			this.google = handler.google
@@ -183,10 +184,22 @@ module.exports = class SequelizeController extends ExtendController {
 	** Method nexmo_connect
 	** This method is called when we got a connect event
 	*/
-	nexmo_connect (connection) {
+	async nexmo_connect (connection) {
 		const function_name = 'nexmo_connect()'
 		try {
 			global.warn(__filename, function_name, `nexmo open socket ${this.brain.nexmo.from || ''}`)
+			
+			this.brain.recast = { }
+			this.brain.intent = 'default'
+			this.brain.context = 'welcome'
+			this.brain.entities = []
+
+			this.brain.db.user = await this.db.user.add(
+				this.brain.nexmo.from,
+			)
+
+			this.context.run()
+
 			connection.on('message', this.nexmo_message.bind(this))
 			connection.on('close', this.nexmo_close.bind(this))
 

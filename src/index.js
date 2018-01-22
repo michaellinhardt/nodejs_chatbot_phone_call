@@ -1,4 +1,4 @@
-import { _log, _micro } from './config'
+import { _log, _micro, _synthesizer } from './config'
 
 import controllers from './controller'
 
@@ -22,8 +22,8 @@ class Dolores extends controllers.ExtendController {
 		const function_name = 'start()'
 		try {
 			this.load_controller()
-			await this.start_controller()
 			this.link_controller()
+			await this.start_controller()
 
 			this.express.listen()
 
@@ -43,6 +43,7 @@ class Dolores extends controllers.ExtendController {
 			this.google.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
 			this.answer.webchat_send_message = this.socket.webchat_send_message.bind(this.socket)
 			this.nexmo.webchat_newcall = this.socket.webchat_newcall.bind(this.socket)
+			this.micro.webchat_newcall = this.socket.webchat_newcall.bind(this.socket)
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
@@ -58,24 +59,34 @@ class Dolores extends controllers.ExtendController {
 		const function_name = 'start_controller()'
 		try {
 			const brain = { db: { messages: [] } }
-			await this.sequelize.start()
+			await this.sequelize.start({brain})
 			this.nexmo.start({ brain, db: this.sequelize })
-			this.answer.start({ brain, nexmo: this.nexmo })
+			if (_synthesizer.enable) {
+				this.synthesizer.start({ brain, db: this.sequelize })
+			}
+			this.answer.start({ brain, nexmo: this.nexmo, synthesizer: this.synthesizer })
 			this.context.start({ brain, db: this.sequelize, answer: this.answer })
 			this.recast.start({ brain, context: this.context, answer: this.answer })
 			this.google.start({ brain, recast: this.recast })
 			this.express.start({ nexmo: this.nexmo })
-			if (_micro.enable) {
-				this.nexmo.api.talk = () => true
-				this.micro.start({ brain, google: this.google })
-			}
 			this.socket.start({
 				brain,
 				express: this.express,
 				google: this.google,
 				db: this.sequelize,
+				context: this.context,
 			})
-
+			if (_micro.enable) {
+				this.nexmo.api.talk = () => true
+				this.micro.start({
+					brain,
+					db: this.sequelize,
+					context: this.context,
+					google: this.google,
+				})
+				this.socket.webchat_newcall(brain.nexmo.conversation_uuid)
+			}
+			
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)
 		}
@@ -99,6 +110,7 @@ class Dolores extends controllers.ExtendController {
 			this.answer = new controllers.AnswerController()
 			this.micro = new controllers.MicroController()
 			this.context = new controllers.ContextController()
+			this.synthesizer = new controllers.SynthesizerController()
 
 		} catch (error) {
 			process.stdout.write(`${_log.color.filename}${this.path_to_index(__filename)}${_log.color.warn}: ${function_name}\r\n${_log.color.error}${error.stack}\r\n${_log.color.clear}`)

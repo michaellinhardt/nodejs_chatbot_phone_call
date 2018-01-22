@@ -5,22 +5,17 @@
 
 module.exports = [
 	{
-		"action": "talk",
-		"text": "Ici Daulaurésse.",
-		"voiceName": "Celine",
-	},
-	{
 		"action": "connect",
 		"eventUrl":
 		[
-			"https://48e38901.ngrok.io/nexmo/events",
+			"https://6ee72150.ngrok.io/nexmo/events",
 		],
 		"from": "33172770596",
 		"endpoint":
 		[
 			{
 				"type": "websocket",
-				"uri": "ws://48e38901.ngrok.io/socket",
+				"uri": "ws://6ee72150.ngrok.io/socket",
 				"content-type": "audio/l16;rate=16000",
 				"headers":
 				{

@@ -16,10 +16,11 @@ const MessageSchema = {
 }
 
 export default class MessageModel {
-	start (sequelize) {
+	start (handler) {
 		const function_name = 'start()'
 		try {
-			this.schema = sequelize.db.define('message', MessageSchema)
+			this.brain = handler.brain
+			this.schema = handler.db.define('message', MessageSchema)
 			this.schema.hasMany(this.schema, {as: 'messages'})
 			this.schema.sync()
 

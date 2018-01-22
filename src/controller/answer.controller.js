@@ -1,5 +1,7 @@
 import _ from 'lodash'
 
+import { _synthesizer } from '../config'
+
 import answer from '../answer'
 
 import ExtendController from './extend.controller'
@@ -18,6 +20,7 @@ module.exports = class AnswerController extends ExtendController {
 		try {
 			this.brain = handler.brain
 			this.nexmo = handler.nexmo
+			this.synthesizer = handler.synthesizer
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -37,6 +40,10 @@ module.exports = class AnswerController extends ExtendController {
 				'Dolores',
 				this.brain.answer.response,
 			)
+
+			if (_synthesizer.enable) {
+				this.synthesizer.talk(this.brain.answer.response)
+			}
 
 			this.nexmo.answer()
 
@@ -73,7 +80,7 @@ module.exports = class AnswerController extends ExtendController {
 		try {
 			_.forEach(this.brain.answer.response.match(/\{(.*?)\}/g), (value) => {
 				const strPathToData = value.replace('{', '').replace('}', '')
-				const targetedData = _.get(this.brain.answer.data, strPathToData)
+				const targetedData = _.get(this.brain.db, strPathToData)
 				this.brain.answer.response = this.brain.answer.response.replace(value, targetedData)
 			})
 		} catch (error) {

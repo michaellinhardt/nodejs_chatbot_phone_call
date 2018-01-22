@@ -47,7 +47,7 @@ module.exports = class NexmoController extends ExtendController {
 	** This method is call when Nexmo post data on road /nexmo/ncco
 	** It send to nexmo the ncco config to connect with socket
 	*/
-	get_ncco (request, response) {
+	async get_ncco (request, response) {
 		const function_name = 'get_ncco()'
 		try {
 			this.ncco_url_data(request.url)
@@ -58,10 +58,12 @@ module.exports = class NexmoController extends ExtendController {
 				}
 
 				this.ncco_save_data()
+
 				this.webchat_newcall(this.brain.nexmo.conversation_uuid)
 
 				response.writeHead(200, { 'Content-Type': 'application/json' });
 				response.end(JSON.stringify(_nexmo), 'utf-8');
+
 				global.info(__filename, function_name, `incoming call from: ${this.brain.nexmo.from}`)
 
 			} catch (error) {

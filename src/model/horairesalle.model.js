@@ -18,10 +18,11 @@ const HorairesalleSchema = {
 }
 
 export default class HorairesalleModel {
-	async start (sequelize) {
+	async start (handler) {
 		const function_name = 'start()'
 		try {
-			this.schema = sequelize.db.define('horairesalle', HorairesalleSchema)
+			this.brain = handler.brain
+			this.schema = handler.db.define('horairesalle', HorairesalleSchema)
 			await this.schema.sync()
 			this.verif_db()
 
@@ -29,9 +30,7 @@ export default class HorairesalleModel {
 			global.err(__filename, function_name, error.stack)
 		}
 	}
-
-
-
+	
 	async verif_db (phoneNumber) {
 		try {
 			const function_name = 'add()'

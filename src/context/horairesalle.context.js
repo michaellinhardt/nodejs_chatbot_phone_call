@@ -17,17 +17,18 @@ export default class HorairesalleContext {
 			this.brain.context = 'horairesalle'
 			this.brain.answer.index = 'horairesalle'
 
-			if (!this.brain.answer.data.horairesalle) {
-				this.brain.answer.data.horairesalle = { }
+			if (!this.brain.db.horairesalle) {
+				this.brain.db.horairesalle = { }
 			}
 
 
 			if (this[this.brain.intent]) {
 				this[this.brain.intent]()
+				return true
 
-			} else {
-				this.default()
 			}
+
+			return false
 
 		} catch (error) {
 			global.err(__filename, 'run()', error.stack)
@@ -39,10 +40,17 @@ export default class HorairesalleContext {
 			const messages = this.brain.db.messages
 			const entities = this.brain.entities
 
-			if (messages[id].intent === 'gethoraires' && entities.datetime
+			console.log(`id: ${id}`)
+
+			if (messages[id].intent === 'gethoraires' && entities && entities.datetime
 			&& entities.datetime[0] && entities.datetime[0].iso) {
-				console.log('ici')
 				this.gethoraires()
+				return true
+
+			} else if (messages[id].intent === 'inscrire'
+			&& (this.brain.intent === 'oui' || this.brain.intent === 'non')
+			&& id < 3) {
+				this.inscrire_reponse()
 				return true
 			}
 
@@ -59,15 +67,39 @@ export default class HorairesalleContext {
 
 			this.gethoraires_datetime()
 
-			this.brain.answer.data.horairesalle.day = planning[this.dayId].day
+			this.brain.db.horairesalle.day = planning[this.dayId].day
 
 			if (!planning[this.dayId].start) {
 				this.brain.answer.label = 'gethoraires-close'
 
 			} else {
 				this.brain.answer.label = 'gethoraires-open'
-				this.brain.answer.data.horairesalle.start = planning[this.dayId].start
-				this.brain.answer.data.horairesalle.end = planning[this.dayId].end
+				this.brain.db.horairesalle.start = planning[this.dayId].start
+				this.brain.db.horairesalle.end = planning[this.dayId].end
+			}
+
+		} catch (error) {
+			global.err(__filename, 'gethoraires', error.stack)
+		}
+	}
+
+	inscrire () {
+		try {
+			this.brain.answer.label = 'inscrire-ask'
+			console.log(this.brain.intent)
+
+		} catch (error) {
+			global.err(__filename, 'gethoraires', error.stack)
+		}
+	}
+
+	inscrire_reponse () {
+		try {
+			if (this.brain.intent === 'oui') {
+				this.brain.answer.label = 'inscrire-employe'
+
+			} else {
+				this.brain.answer.label = 'inscrire-autre'
 			}
 
 		} catch (error) {
@@ -79,15 +111,16 @@ export default class HorairesalleContext {
 		try {
 			const entities = this.brain.entities
 
-			if (entities.datetime && entities.datetime[0] && entities.datetime[0].iso) {
-				this.dayId = (new Date(entities.datetime[0].iso)).getDay()
+			if (entities.datetime && entities.datetime[0]
+				&& entities && entities.datetime[0].iso) {
+					this.dayId = (new Date(entities.datetime[0].iso)).getDay()
 
-			} else {
-				this.dayId = (new Date).getDay()
+				} else {
+					this.dayId = (new Date).getDay()
+				}
+
+			} catch (error) {
+				global.err(__filename, 'gethoraires', error.stack)
 			}
-
-		} catch (error) {
-			global.err(__filename, 'gethoraires', error.stack)
 		}
 	}
-}
