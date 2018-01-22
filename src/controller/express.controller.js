@@ -1,7 +1,7 @@
 import express from 'express'
 import http from  'http'
 
-import { _log, _express } from '../config'
+import { _express } from '../config'
 
 import ExtendController from './extend.controller'
 
@@ -15,11 +15,11 @@ module.exports = class ExpressController extends ExtendController {
 	constructor (parent) { super({ name: __filename }) }
 
 	/*
-	** Method init ()
+	** Method start ()
 	** This method run http server and road to listen
 	*/
-	async init (handler) {
-		const function_name = 'init()'
+	async start (handler) {
+		const function_name = 'start()'
 		try {
 			this.init_config()
 			this.init_roads(handler)

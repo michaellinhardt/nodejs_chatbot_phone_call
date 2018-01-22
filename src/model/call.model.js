@@ -12,20 +12,21 @@ const CallSchema = {
 }
 
 export default class CallModel {
-	start (sequelize) {
+	start (handler) {
 		const function_name = 'start()'
 		try {
-			this.schema = sequelize.db.define('calls', CallSchema)
+			this.brain = handler.brain
+			this.schema = handler.db.define('call', CallSchema)
 
-			sequelize.user.schema.hasMany(this.schema, {as: 'calls'})
+			handler.user.schema.hasMany(this.schema, {as: 'calls'})
 			this.schema.sync()
-			sequelize.user.schema.sync()
+			handler.user.schema.sync()
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}
 	}
-
+	
 	async add (userId, conversation_uuid) {
 		try {
 			const function_name = 'add()'

@@ -6,6 +6,9 @@ import _nexmoapi from './nexmoapi.config'
 import _google from './google.config'
 import _recast from './recast.config'
 import _socket from './socket.config'
+import _micro from './micro.config'
+import _context from './context.config'
+import _synthesizer from './synthesizer.config'
 
 module.exports = {
 	_log,
@@ -16,4 +19,7 @@ module.exports = {
 	_google,
 	_recast,
 	_socket,
+	_micro,
+	_context,
+	_synthesizer,
 }

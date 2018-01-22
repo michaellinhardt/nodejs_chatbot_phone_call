@@ -1,13 +1,8 @@
 import Sequelize from 'sequelize'
 
-import { _log, _sequelize } from '../config'
+import { _sequelize } from '../config'
 
-import {
-	CallModel,
-	ConversationModel,
-	MessageModel,
-	UserModel,
-} from '../model'
+import models from '../model'
 
 
 import ExtendController from './extend.controller'
@@ -25,9 +20,10 @@ module.exports = class SequelizeController extends ExtendController {
 	** This method connect sequelize to the db
 	** This is async because we wait to be connected before continue
 	*/
-	async start () {
+	async start (handler) {
 		const function_name = 'start()'
 		try {
+			this.brain = handler.brain
 			this.db = new Sequelize(_sequelize.database, _sequelize.username, _sequelize.password, { ..._sequelize, operatorsAliases: this.operators_aliases })
 			await this.db.authenticate()
 			this.init_table()
@@ -38,24 +34,26 @@ module.exports = class SequelizeController extends ExtendController {
 		}
 	}
 
-		/*
-		** Method init_table
-		*/
-		init_table () {
-			const function_name = 'init_table()'
-			try {
-				this.call = new CallModel()
-				this.message = new MessageModel()
-				this.user = new UserModel()
+	/*
+	** Method init_table
+	*/
+	init_table () {
+		const function_name = 'init_table()'
+		try {
+			this.call = new models.CallModel()
+			this.message = new models.MessageModel()
+			this.user = new models.UserModel()
+			this.horairesalle = new models.HorairesalleModel()
 
-				this.user.start(this)
-				this.call.start(this)
-				this.message.start(this)
-
-			} catch (error) {
-				global.err(__filename, function_name, error)
-			}
+			this.user.start(this)
+			this.call.start(this)
+			this.message.start(this)
+			this.horairesalle.start(this)
+			
+		} catch (error) {
+			global.err(__filename, function_name, error.stack)
 		}
+	}
 
 	/*
 	** Method operators_aliases
