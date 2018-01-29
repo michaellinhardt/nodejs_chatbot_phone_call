@@ -12,4 +12,8 @@ module.exports = {
 		"Merci pour votre appel et à bientot.",
 		"Tout le plaisir est pour moi. Aurevoir.",
 	],
+	"presenceverify":
+	[
+		"Je suis bien à votre écoute."
+	],
 }

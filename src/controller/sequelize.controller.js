@@ -44,12 +44,14 @@ module.exports = class SequelizeController extends ExtendController {
 			this.message = new models.MessageModel()
 			this.user = new models.UserModel()
 			this.horairesalle = new models.HorairesalleModel()
+			this.packages = new models.PackageModel()
 
 			this.user.start(this)
 			this.call.start(this)
 			this.message.start(this)
 			this.horairesalle.start(this)
-			
+			this.packages.start(this)
+
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}

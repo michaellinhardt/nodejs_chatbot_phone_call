@@ -30,7 +30,7 @@ export default class HorairesalleModel {
 			global.err(__filename, function_name, error.stack)
 		}
 	}
-	
+
 	async verif_db (phoneNumber) {
 		try {
 			const function_name = 'add()'
