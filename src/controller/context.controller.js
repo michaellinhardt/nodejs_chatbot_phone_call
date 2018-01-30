@@ -49,12 +49,12 @@ module.exports = class ContextController extends ExtendController {
 			if (!this.context[context]
 				|| !this.context[context].run
 				|| !(await this.context[context].run())) {
-					this.previous_context(0)
+					await this.previous_context(0)
 
 				}
 
 				this.answer.build()
-				
+
 			} catch (error) {
 				global.err(__filename, function_name, error.stack)
 			}
@@ -63,14 +63,14 @@ module.exports = class ContextController extends ExtendController {
 		/*
 		** Method previous_context
 		*/
-		previous_context (id) {
+		async previous_context (id) {
 			const function_name = 'previous_context()'
 			try {
 				const messages = this.brain.db.messages
 
 				if (messages[id] && messages[id].context
 					&& this.context[messages[id].context]
-					&& this.context[messages[id].context].default(id)) {
+					&& (await this.context[messages[id].context].default(id))) {
 						this.brain.answer.index = messages[id].context
 						return true
 
@@ -78,7 +78,7 @@ module.exports = class ContextController extends ExtendController {
 						return false
 
 					}	else {
-						return this.previous_context(id + 1)
+						return (await this.previous_context(id + 1))
 					}
 
 				} catch (error) {
