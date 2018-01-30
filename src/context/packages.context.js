@@ -42,13 +42,45 @@ export default class PackagesContext {
 		}
 	}
 
-	default (id) {
+	async default (id) {
 		try {
+			const entities = this.brain.entities
+			const hasTrackingNumberBeenGiven = entities && entities['tracking-number'] && entities['tracking-number'][0]
 
-			console.log("PackagesContext : default called")
+			if (hasTrackingNumberBeenGiven) {
+				this.brain.answer.index = 'packages'
+				await this.settrackingnumber()
+
+				return true
+			}
 
 		} catch (error) {
 			global.err(__filename, 'default', error.stack)
+		}
+	}
+
+	sendnumber () {
+		this.brain.answer.label = 'send-by-email'
+		this.brain.db.packages.currentRequest = ''
+	}
+
+	numberlost () {
+		this.brain.answer.label = 'send-by-email'
+		this.brain.db.packages.currentRequest = ''
+	}
+
+	async getdeliverylocation () {
+		const trackingNumber = this.brain.db.packages.trackingNumber
+
+		if (trackingNumber) {
+			this.brain.answer.label = 'delivery-location'
+			const deliveryLocation = await this.db.packages.get_delivery_location(trackingNumber)
+
+			this.brain.db.packages.deliveryLocation = deliveryLocation
+		}
+		else {
+			this.brain.answer.label = 'ask-tracking-number'
+			this.brain.db.packages.currentRequest = 'getdeliverylocation'
 		}
 	}
 

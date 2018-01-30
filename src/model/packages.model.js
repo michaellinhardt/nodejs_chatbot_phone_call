@@ -55,6 +55,21 @@ export default class PackageModel {
 		}
 	}
 
+	async get_delivery_location (trackingNumber) {
+		try {
+			const deliveryLocation = (await this.schema.find({
+				where: {
+					trackingNumber: trackingNumber,
+				},
+			})).dataValues.address
+
+			return (deliveryLocation)
+
+		} catch (error) {
+			global.err(__filename, 'get_delivery_location', error.stack)
+		}
+	}
+
 	async is_tracking_number_valid (trackingNumber) {
 		try {
 			const packageState = (await this.schema.find({
@@ -62,7 +77,7 @@ export default class PackageModel {
 					trackingNumber: trackingNumber,
 				},
 			}))
-			
+
 			const result = (packageState === null) ? false : true
 			return (result)
 

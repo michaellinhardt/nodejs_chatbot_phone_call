@@ -19,4 +19,12 @@ module.exports = {
 	[
 		"J'ai cru comprendre que vous me donniez votre numéro de colis et il semble manquer des chiffres. Pouvez vous recommencer s'il vous plait ?"
 	],
+	"send-by-email":
+	[
+		"Votre numéro de colis vous sera envoyé par mail."
+	],
+	"delivery-location":
+	[
+		"Votre colis sera livré à l'adresse : {packages.deliveryLocation}"
+	],
 }
