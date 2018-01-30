@@ -99,7 +99,6 @@ module.exports = class ContextController extends ExtendController {
 					this.context.horairesalle.start(this.handler)
 					this.context.small.start(this.handler)
 					this.context.welcome.start(this.handler)
-					this.context.packages.start(this.handler)
 
 				} catch (error) {
 					global.err(__filename, function_name, error.stack)
@@ -116,7 +115,6 @@ module.exports = class ContextController extends ExtendController {
 					this.context.horairesalle = new context.HorairesalleContext()
 					this.context.small = new context.SmallContext()
 					this.context.welcome = new context.WelcomeContext()
-					this.context.packages = new context.PackagesContext()
 
 				} catch (error) {
 					global.err(__filename, function_name, error.stack)
