@@ -49,7 +49,7 @@ module.exports = class SequelizeController extends ExtendController {
 			this.call.start(this)
 			this.message.start(this)
 			this.horairesalle.start(this)
-			
+
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
 		}
