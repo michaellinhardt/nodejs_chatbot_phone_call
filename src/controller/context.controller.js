@@ -54,7 +54,7 @@ module.exports = class ContextController extends ExtendController {
 				}
 
 				this.answer.build()
-				
+
 			} catch (error) {
 				global.err(__filename, function_name, error.stack)
 			}
@@ -99,6 +99,7 @@ module.exports = class ContextController extends ExtendController {
 					this.context.horairesalle.start(this.handler)
 					this.context.small.start(this.handler)
 					this.context.welcome.start(this.handler)
+					this.context.redirect.start(this.handler)
 
 				} catch (error) {
 					global.err(__filename, function_name, error.stack)
@@ -115,6 +116,7 @@ module.exports = class ContextController extends ExtendController {
 					this.context.horairesalle = new context.HorairesalleContext()
 					this.context.small = new context.SmallContext()
 					this.context.welcome = new context.WelcomeContext()
+					this.context.redirect = new context.RedirectContext()
 
 				} catch (error) {
 					global.err(__filename, function_name, error.stack)

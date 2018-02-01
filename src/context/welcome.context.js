@@ -5,7 +5,7 @@ export default class WelcomeContext {
 			this.db = handler.db
 			this.brain = handler.brain
 
-			global.warn(__filename, function_name, 'horaire salle de sport ready')
+			global.warn(__filename, function_name, 'welcome ready')
 
 		} catch (error) {
 			global.err(__filename, function_name, error.stack)
@@ -29,6 +29,7 @@ export default class WelcomeContext {
 	}
 
 	async default (id) {
+		console.log('welcome default called')
 		try {
 			const messages = this.brain.db.messages || []
 			const user = this.brain.db.user
@@ -49,7 +50,7 @@ export default class WelcomeContext {
 			global.err(__filename, 'default', error.stack)
 		}
 	}
-	
+
 	async prenom () {
 		const function_name = 'prenom()'
 		try {

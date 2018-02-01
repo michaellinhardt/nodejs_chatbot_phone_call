@@ -36,6 +36,7 @@ export default class HorairesalleContext {
 	}
 
 	default (id) {
+		console.log('horaires default called')
 		try {
 			const messages = this.brain.db.messages
 			const entities = this.brain.entities
@@ -62,6 +63,7 @@ export default class HorairesalleContext {
 	}
 
 	gethoraires () {
+		console.log('gethoraires called')
 		try {
 			const planning = this.db.horairesalle.planning
 
